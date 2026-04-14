@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversing Coffee | Abraham Akbareian — Specialty Coffee Educator & Content Creator</title>
+  <meta name="description" content="Abraham Akbareian is a UK-based specialty coffee content creator and educator, bridging the gap between professional baristas and home enthusiasts. Find exclusive discount codes, gear recommendations, and coffee knowledge.">
+  <meta name="keywords" content="conversing coffee, Abraham Akbareian, specialty coffee, coffee discount codes, coffee influencer, home barista, coffee educator, coffee content creator, espresso, pour over, coffee gear UK">
+  <meta name="author" content="Abraham Akbareian">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.conversingcoffee.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Conversing Coffee | Abraham Akbareian">
+  <meta property="og:description" content="Specialty coffee educator and content creator. Exclusive discount codes, honest gear reviews, and the bridge between pro baristas and home enthusiasts.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.conversingcoffee.com/">
+  <meta property="og:site_name" content="Conversing Coffee">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Conversing Coffee | Abraham Akbareian">
+  <meta name="twitter:description" content="Specialty coffee educator and content creator. Exclusive discount codes, honest gear reviews, and coffee education for home enthusiasts.">
+
+  <!-- Structured Data: Person -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Abraham Akbareian",
+    "alternateName": "Abe Akbareian",
+    "url": "https://www.conversingcoffee.com",
+    "sameAs": [
+      "https://www.instagram.com/conversingcoffee",
+      "https://www.tiktok.com/@conversingcoffee"
+    ],
+    "jobTitle": "Specialty Coffee Content Creator & Educator",
+    "description": "UK-based specialty coffee educator and content creator, bridging the gap between professional baristas and home enthusiasts.",
+    "knowsAbout": ["Specialty Coffee", "Espresso", "Pour Over", "Coffee Equipment", "Home Barista Techniques", "Coffee Education"]
+  }
+  </script>
+
+  <!-- Structured Data: Website -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Conversing Coffee",
+    "url": "https://www.conversingcoffee.com",
+    "description": "Specialty coffee education, honest gear reviews, and exclusive discount codes for home baristas."
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F7F4EF;
+      --cream-dark: #EDE8DF;
+      --espresso: #1C1410;
+      --espresso-mid: #3D2B1F;
+      --roast: #6B3F2A;
+      --caramel: #C4894E;
+      --caramel-light: #E8C89A;
+      --steam: #8C8073;
+      --white: #FDFCFA;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--espresso);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cream-dark);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--espresso);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--steam);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--espresso); }
+
+    /* HERO */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-text h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--espresso);
+      margin-bottom: 1.25rem;
+    }
+    .hero-text h1 em {
+      font-style: italic;
+      color: var(--roast);
+    }
+    .hero-text p {
+      font-size: 1.05rem;
+      color: var(--espresso-mid);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--espresso);
+      color: var(--cream);
+      padding: 0.75rem 1.75rem;
+      border-radius: 2px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--roast); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-block;
+      border: 1px solid var(--espresso);
+      color: var(--espresso);
+      padding: 0.75rem 1.75rem;
+      border-radius: 2px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { background: var(--espresso); color: var(--cream); }
+
+    .hero-visual {
+      position: relative;
+    }
+    .hero-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 4px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    .hero-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--espresso);
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--caramel-light);
+      font-style: italic;
+    }
+    .hero-card h2 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+    .hero-card .handle {
+      font-size: 0.85rem;
+      color: var(--caramel);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .tag {
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      color: var(--espresso-mid);
+      font-size: 0.75rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    /* SECTION WRAPPER */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--espresso);
+      margin-bottom: 1rem;
+    }
+    .section-intro {
+      font-size: 1rem;
+      color: var(--steam);
+      font-weight: 300;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--cream-dark);
+      margin: 0;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--espresso-mid);
+      font-weight: 300;
+      margin-bottom: 1rem;
+      line-height: 1.85;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--cream-dark);
+      border: 1px solid var(--cream-dark);
+    }
+    .stat-box {
+      background: var(--white);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--roast);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--steam);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* OPPORTUNITIES */
+    .opps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .opp-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      padding: 1.5rem;
+      border-radius: 2px;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .opp-card:hover { border-color: var(--caramel); transform: translateY(-2px); }
+    .opp-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .opp-card h3 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .opp-card p {
+      font-size: 0.85rem;
+      color: var(--steam);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* DISCOUNT CODES */
+    #discount-codes { background: var(--white); }
+    #discount-codes .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .codes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .code-card {
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      padding: 1.25rem 1.5rem;
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .code-card:hover {
+      border-color: var(--caramel);
+      box-shadow: 0 2px 12px rgba(196, 137, 78, 0.12);
+    }
+    .code-brand {
+      font-weight: 500;
+      font-size: 1rem;
+      color: var(--espresso);
+    }
+    .code-description {
+      font-size: 0.85rem;
+      color: var(--steam);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .code-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--espresso);
+      color: var(--caramel-light);
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      margin-top: 0.25rem;
+      align-self: flex-start;
+    }
+    .code-chip.no-code {
+      background: var(--roast);
+      font-family: var(--sans);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .code-discount {
+      font-size: 0.78rem;
+      color: var(--caramel);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    /* CONTACT */
+    .contact-block {
+      background: var(--espresso);
+      color: var(--cream);
+      border-radius: 4px;
+      padding: 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+    .contact-block h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--caramel-light);
+    }
+    .contact-block p {
+      font-weight: 300;
+      color: #a89880;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 480px;
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--caramel-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: #fff; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--cream-dark);
+      padding: 2rem;
+      text-align: center;
+    }
+    footer p {
+      font-size: 0.8rem;
+      color: var(--steam);
+      font-weight: 300;
+    }
+    footer a { color: var(--caramel); text-decoration: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .contact-block { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 3rem 1.5rem; }
+      #discount-codes .inner { padding: 3rem 1.5rem; }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-text { animation: fadeUp 0.6s ease both; }
+    .hero-visual { animation: fadeUp 0.6s 0.15s ease both; }
+  </style>
+</head>
+<body>
+
+  <nav aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Conversing Coffee</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#discount-codes">Discount Codes</a></li>
+        <li><a href="#work-with-me">Work With Me</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <main>
+    <div class="hero">
+      <div class="hero-text">
+        <p class="section-label">Specialty Coffee Content Creator</p>
+        <h1>Making <em>great coffee</em> feel possible at home</h1>
+        <p>Abraham Akbareian bridges the gap between professional baristas and home enthusiasts — with the knowledge, the gear, and the charisma to make specialty coffee accessible to everyone.</p>
+        <div class="hero-ctas">
+          <a href="#discount-codes" class="btn-primary">Explore Discount Codes</a>
+          <a href="#work-with-me" class="btn-secondary">Work With Me</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-avatar">A</div>
+          <h2>Abraham Akbareian</h2>
+          <p class="handle">@ConversingCoffee</p>
+          <div class="hero-tags">
+            <span class="tag">Specialty Coffee</span>
+            <span class="tag">Home Barista</span>
+            <span class="tag">Espresso</span>
+            <span class="tag">Pour Over</span>
+            <span class="tag">Gear Reviews</span>
+            <span class="tag">Coffee Education</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <hr class="section-divider">
+
+  <!-- ABOUT -->
+  <section id="about" aria-label="About Abraham Akbareian">
+    <p class="section-label">About</p>
+    <h2 class="section-title">The prosumer's guide to specialty coffee</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm Abraham — known online as Conversing Coffee. I'm a UK-based specialty coffee educator and content creator with a mission to close the gap between what professional baristas know and what home enthusiasts actually get told.</p>
+        <p>My content lives across Instagram and TikTok, where I break down complex brewing science into digestible, genuinely useful guidance — whether you're dialling in your first espresso machine or hunting down the best single-origin beans on the market.</p>
+        <p>I don't just talk about coffee. I've built deep relationships with the brands shaping the prosumer coffee landscape, giving me honest, hands-on experience with gear at every price point. When I recommend something, it's because I've used it.</p>
+        <p>I'm also actively seeking <strong>podcast, television, and radio opportunities</strong> — as someone who communicates naturally on camera and has a genuine passion for the craft, I'm ready to bring specialty coffee to wider audiences.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-box">
+          <span class="stat-number">17+</span>
+          <span class="stat-label">Brand Partnerships</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">UK</span>
+          <span class="stat-label">Based Creator</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">2</span>
+          <span class="stat-label">Active Platforms</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">Cups Brewed</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- DISCOUNT CODES -->
+  <div id="discount-codes">
+    <div class="inner">
+      <p class="section-label">Exclusive Deals</p>
+      <h2 class="section-title">Discount codes & affiliate links</h2>
+      <p class="section-intro">Every brand listed here is one I've personally worked with. Use these codes to save on the gear, beans, and tools that actually make a difference.</p>
+
+      <div class="codes-grid">
+
+        <a href="https://www.etsy.com/uk/shop/FusedVisionsHQ" class="code-card" target="_blank" rel="noopener" aria-label="FusedVisions discount - 30% off with code CONVERSING">
+          <span class="code-brand">FusedVisions</span>
+          <span class="code-description">Handcrafted coffee accessories on Etsy — unique pieces made for the enthusiast.</span>
+          <span class="code-chip">CONVERSING</span>
+          <span class="code-discount">30% discount</span>
+        </a>
+
+        <a href="https://pboost.me/Q0118P417" class="code-card" target="_blank" rel="noopener" aria-label="IKAPE Coffee discount link">
+          <span class="code-brand">IKAPE Coffee</span>
+          <span class="code-description">Quality espresso tools and accessories for the serious home barista.</span>
+          <span class="code-chip no-code">Use link →</span>
+          <span class="code-discount">Exclusive discount via link</span>
+        </a>
+
+        <a href="https://aroespresso.com/" class="code-card" target="_blank" rel="noopener" aria-label="Aro Espresso 10% off with code CONV10.W26">
+          <span class="code-brand">Aro Espresso</span>
+          <span class="code-description">Precision espresso equipment built for those who take extraction seriously.</span>
+          <span class="code-chip">CONV10.W26</span>
+          <span class="code-discount">10% off</span>
+        </a>
+
+        <a href="https://www.laybirdcoffee.com/?bg_ref=IHMbWHd7ls" class="code-card" target="_blank" rel="noopener" aria-label="Laybird Coffee Tools 10% off with code CONVERSING">
+          <span class="code-brand">Laybird Coffee Tools</span>
+          <span class="code-description">Precision tools designed to help home baristas extract better, every time.</span>
+          <span class="code-chip">CONVERSING</span>
+          <span class="code-discount">10% off</span>
+        </a>
+
+        <a href="https://bookoocoffee.com/pxer4d" class="code-card" target="_blank" rel="noopener" aria-label="BooKoo Coffee Themis Mini 5% off with code ABRAHAM">
+          <span class="code-brand">BooKoo Coffee — Themis Mini</span>
+          <span class="code-description">The Themis Mini is a compact espresso tamper designed for consistency and feel.</span>
+          <span class="code-chip">ABRAHAM</span>
+          <span class="code-discount">5% off</span>
+        </a>
+
+        <a href="https://www.maximsespresso.com/products/maxims-la-seine-x-conversing-coffee" class="code-card" target="_blank" rel="noopener" aria-label="Maxim's La Seine X espresso machine - Conversing Coffee edition">
+          <span class="code-brand">Maxim's La Seine X</span>
+          <span class="code-description">An iconic collaboration — the La Seine X, as featured on Conversing Coffee.</span>
+          <span class="code-chip no-code">Conversing Coffee Edition →</span>
+          <span class="code-discount">Exclusive product page</span>
+        </a>
+
+        <a href="https://www.amazon.co.uk/shop/conversingcoffee?ref_=cm_sw_r_mwn_aipsfshop_3KDCS4BFTH6V8GRH5TC8_1&language=en_US" class="code-card" target="_blank" rel="noopener" aria-label="Conversing Coffee Amazon storefront">
+          <span class="code-brand">Amazon UK — My Storefront</span>
+          <span class="code-description">My curated Amazon shop — every piece of gear I recommend in one place.</span>
+          <span class="code-chip no-code">Visit Storefront →</span>
+          <span class="code-discount">Full gear list</span>
+        </a>
+
+        <a href="https://mhw3bomber.com/discount/conversingcoffee" class="code-card" target="_blank" rel="noopener" aria-label="MHW-3B 15% off with code CONVERSINGCOFFEE">
+          <span class="code-brand">MHW-3B</span>
+          <span class="code-description">Premium coffee accessories — distributors, tampers, and tools built to last.</span>
+          <span class="code-chip">CONVERSINGCOFFEE</span>
+          <span class="code-discount">15% off</span>
+        </a>
+
+        <a href="https://sigmacoffee.co.uk/products" class="code-card" target="_blank" rel="noopener" aria-label="Sigma Coffee UK 5% off with code SIGMAXCVC">
+          <span class="code-brand">Sigma Coffee UK</span>
+          <span class="code-description">UK specialty coffee roaster with a thoughtful, considered selection of single origins.</span>
+          <span class="code-chip">SIGMAXCVC</span>
+          <span class="code-discount">5% off</span>
+        </a>
+
+        <a href="https://i.refs.cc/dx1xmFJO?smile_ref=eyJzbWlsZV9zb3VyY2UiOiJzbWlsZV91aSIsInNtaWxlX21lZGl1bSI6IiIsInNtaWxlX2NhbXBhaWduIjoicmVmZXJyYWxfcHJvZ3JhbSIsInNtaWxlX2N1c3RvbWVyX2lkIjoyNjMyMjM1ODk4fQ%3D%3D" class="code-card" target="_blank" rel="noopener" aria-label="Rave Coffee £5 off referral">
+          <span class="code-brand">Rave Coffee</span>
+          <span class="code-description">Award-winning UK roastery. Fresh, seasonal, and consistently brilliant specialty roasts.</span>
+          <span class="code-chip no-code">£5 off via referral →</span>
+          <span class="code-discount">£5 discount via link</span>
+        </a>
+
+        <a href="https://www.shebabuna.com/products/yirgacheffe-ground-coffee-beans?variant=4063178129424" class="code-card" target="_blank" rel="noopener" aria-label="Sheba Coffee 20% off with code CONVERSING20">
+          <span class="code-brand">Sheba Coffee</span>
+          <span class="code-description">Ethiopian heritage specialty coffee — the Yirgacheffe is exceptional. Try it.</span>
+          <span class="code-chip">CONVERSING20</span>
+          <span class="code-discount">20% off</span>
+        </a>
+
+        <a href="https://www.stayhighcoffee.co.uk/" class="code-card" target="_blank" rel="noopener" aria-label="Stay High Coffee 10% off with code CONVERSINGCOFFEE10">
+          <span class="code-brand">Stay High Coffee</span>
+          <span class="code-description">Specialty roasts with a distinct identity. Bold, interesting, and worth exploring.</span>
+          <span class="code-chip">CONVERSINGCOFFEE10</span>
+          <span class="code-discount">10% off</span>
+        </a>
+
+        <a href="https://www.outpeakglobal.com/CONVERSINGCOFFEE" class="code-card" target="_blank" rel="noopener" aria-label="Outpeak Global bean storage 13% off with code CONVERSINGCOFFEE">
+          <span class="code-brand">Outpeak Global — Bean Storage</span>
+          <span class="code-description">Seriously good bean storage. If you're buying quality coffee, store it properly.</span>
+          <span class="code-chip">CONVERSINGCOFFEE</span>
+          <span class="code-discount">13% off</span>
+        </a>
+
+        <a href="https://hototools.com/discount/CC5" class="code-card" target="_blank" rel="noopener" aria-label="HOTO Tools 5% off with code CC5">
+          <span class="code-brand">HOTO Tools</span>
+          <span class="code-description">Beautifully engineered precision tools — not just for coffee, but coffee is a great start.</span>
+          <span class="code-chip">CC5</span>
+          <span class="code-discount">5% off</span>
+        </a>
+
+        <a href="https://rb.gy/0e7nsq" class="code-card" target="_blank" rel="noopener" aria-label="xBloom coffee machine with code xBloom-conversing">
+          <span class="code-brand">xBloom</span>
+          <span class="code-description">The xBloom is a smart, automated specialty coffee machine that punches above its weight.</span>
+          <span class="code-chip">xBloom-conversing</span>
+          <span class="code-discount">Exclusive discount</span>
+        </a>
+
+        <a href="https://outin.com/?dt_id=1274416&_ga=2.1055090.2116297071.1709571057-720792358.1709287869" class="code-card" target="_blank" rel="noopener" aria-label="Outin portable espresso 10% off with code CONVERSINGCOFFEE">
+          <span class="code-brand">Outin</span>
+          <span class="code-description">Portable espresso for people who won't compromise on quality, even on the road.</span>
+          <span class="code-chip">CONVERSINGCOFFEE</span>
+          <span class="code-discount">10% off</span>
+        </a>
+
+        <a href="https://www.buymeacoffee.com/Conversingcoffe" class="code-card" target="_blank" rel="noopener" aria-label="Buy Abraham a coffee to support Conversing Coffee">
+          <span class="code-brand">Support the Channel</span>
+          <span class="code-description">If this content has helped your coffee journey, buy me a coffee. It genuinely means a lot.</span>
+          <span class="code-chip no-code">Buy Me a Coffee ☕</span>
+          <span class="code-discount">Direct support</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- WORK WITH ME -->
+  <section id="work-with-me" aria-label="Work with Conversing Coffee">
+    <p class="section-label">Opportunities</p>
+    <h2 class="section-title">Let's work together</h2>
+    <p class="section-intro">I'm actively collaborating with brands and media outlets who want to reach engaged, passionate coffee audiences.</p>
+    <div class="opps-grid">
+      <div class="opp-card">
+        <span class="opp-icon">📸</span>
+        <h3>Brand Partnerships</h3>
+        <p>Sponsored content, product launches, and affiliate campaigns — crafted to feel authentic, not forced.</p>
+      </div>
+      <div class="opp-card">
+        <span class="opp-icon">🎙</span>
+        <h3>Podcast Appearances</h3>
+        <p>I talk about coffee with depth and personality. Guest spots, co-hosting, and interviews welcome.</p>
+      </div>
+      <div class="opp-card">
+        <span class="opp-icon">📺</span>
+        <h3>Television & Radio</h3>
+        <p>Camera-confident and comfortable under pressure — I'm ready to bring specialty coffee to mainstream audiences.</p>
+      </div>
+      <div class="opp-card">
+        <span class="opp-icon">🎓</span>
+        <h3>Education & Consulting</h3>
+        <p>Product landscape knowledge, consumer education, and content strategy for coffee brands.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- CONTACT -->
+  <section id="contact" aria-label="Contact Abraham Akbareian">
+    <div class="contact-block">
+      <div>
+        <h2>Get in touch</h2>
+        <p>Whether you're a brand looking for a partnership, a podcast looking for a guest, or a broadcaster wanting to feature specialty coffee — I'd love to hear from you. I'm based in the UK and available for both in-person and remote projects.</p>
+      </div>
+      <div class="contact-links">
+        <a href="https://www.instagram.com/conversingcoffee" class="contact-link" target="_blank" rel="noopener">
+          <span>📷</span> @conversingcoffee on Instagram
+        </a>
+        <a href="https://www.tiktok.com/@conversingcoffee" class="contact-link" target="_blank" rel="noopener">
+          <span>🎵</span> @conversingcoffee on TikTok
+        </a>
+        <a href="https://www.buymeacoffee.com/Conversingcoffe" class="contact-link" target="_blank" rel="noopener">
+          <span>☕</span> Buy Me a Coffee
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Abraham Akbareian / Conversing Coffee. All rights reserved. |
+    <a href="https://www.instagram.com/conversingcoffee" rel="noopener">Instagram</a> ·
+    <a href="https://www.tiktok.com/@conversingcoffee" rel="noopener">TikTok</a></p>
+  </footer>
+
+</body>
+</html>
