@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversing Coffee — Espresso, Made Easy | Abraham Akbareian</title>
+<meta name="description" content="Abraham Akbareian — UK speciality coffee content creator and educator. Espresso made easy: no gatekeeping, exclusive discount codes, honest gear reviews, and brand partnerships.">
+<meta name="author" content="Abraham Akbareian">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.conversingcoffee.com/">
+<meta property="og:title" content="Conversing Coffee — Espresso, Made Easy">
+<meta property="og:description" content="Speciality coffee, no gatekeeping. Discount codes for followers, media kit for brands.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.conversingcoffee.com/">
+<meta property="og:site_name" content="Conversing Coffee">
+<meta property="og:image" content="https://www.conversingcoffee.com/images/abe-espresso.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --walnut:#100904;
+  --bark:#382416;
+  --cork:#40372e;
+  --drift:#6c5f51;
+  --cream:#ffedd7;
+  --cream-dim:rgba(255,237,215,.62);
+  --ember:#dc5000;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--walnut);
+  color:var(--cream);
+  font-family:'Inter',system-ui,sans-serif;
+  font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--ember);color:var(--walnut)}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* type modes: UPPERCASE 500 labels/heads · mixed-case 400 body */
+.label{
+  font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ember);
+}
+.h-display{
+  font-weight:500;text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
+}
+.body-lg{
+  font-weight:400;font-size:clamp(19px,2.2vw,26px);line-height:1.4;color:var(--cream);
+}
+.body-md{font-weight:400;font-size:17px;line-height:1.55;color:var(--cream-dim)}
+.dot{color:var(--ember)}
+
+.dashed{border:none;border-top:1px dashed var(--cork)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(30px)}
+
+/* ============ NAV ============ */
+nav{
+  position:fixed;inset:0 0 auto 0;z-index:200;
+  transition:background .4s,border-color .4s;
+  border-bottom:1px dashed transparent;
+}
+nav.on{background:rgba(16,9,4,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-color:var(--cork)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px clamp(20px,4vw,48px);max-width:1440px;margin:0 auto}
+.nav-logo img{height:30px;width:auto}
+.nav-links{display:flex;align-items:center;gap:clamp(18px,3vw,38px)}
+.nav-links a{
+  font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-dim);
+  padding-bottom:3px;border-bottom:1px dashed transparent;transition:color .25s,border-color .25s;
+}
+.nav-links a:hover{color:var(--cream);border-color:var(--drift)}
+.nav-links a.now{color:var(--cream);border-color:var(--ember)}
+.nav-cta{
+  border:1px solid var(--cream);border-radius:22.5px;padding:9px 20px!important;
+  color:var(--cream)!important;border-bottom:1px solid var(--cream)!important;
+  transition:all .25s!important;
+}
+.nav-cta:hover{background:var(--cream);color:var(--walnut)!important}
+.burger{display:none;background:none;border:1px solid var(--cork);border-radius:8px;color:var(--cream);font-size:20px;padding:6px 12px;cursor:pointer}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:120px 0 80px}
+.hero .label{margin-bottom:34px}
+.hero h1{font-size:clamp(56px,11.5vw,164px)}
+.hero h1 span{display:block}
+.hero-sub{margin-top:44px;max-width:520px}
+.hero-foot{
+  position:absolute;bottom:0;left:0;right:0;
+  border-top:1px dashed var(--cork);
+}
+.hero-foot .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px;gap:14px}
+.hero-foot span{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--drift)}
+.cue{width:1px;height:64px;background:linear-gradient(var(--ember),transparent);position:absolute;left:50%;bottom:70px;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%,100%{opacity:.9;transform:scaleY(1)}50%{opacity:.25;transform:scaleY(.55)}}
+
+/* ============ POUR SCENE ============ */
+.pour{position:relative}
+.pour-stage{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pour-media{position:relative;height:min(78vh,760px);aspect-ratio:9/16;border:1px solid var(--cork);background:var(--bark)}
+.pour-media video{width:100%;height:100%;object-fit:cover;filter:contrast(1.04) saturate(.95)}
+.pour-media::after{content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 90px rgba(16,9,4,.55)}
+/* coded fallback pour */
+.pour-svg{width:100%;height:100%}
+.pour-cap{
+  position:absolute;z-index:5;left:clamp(20px,5vw,72px);top:50%;transform:translateY(-50%);
+  pointer-events:none;max-width:38vw;
+  font-weight:500;text-transform:uppercase;letter-spacing:.02em;line-height:.9;
+  font-size:clamp(40px,6.5vw,96px);color:var(--cream);opacity:0;
+  text-shadow:0 2px 30px rgba(16,9,4,.8);
+}
+.pour-cap small{display:block;font-size:12px;letter-spacing:.24em;color:var(--ember);margin-bottom:18px;font-weight:500}
+.pour-side{
+  position:absolute;right:clamp(16px,4vw,60px);top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:center;
+  font-size:11px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--drift);white-space:nowrap;
+}
+@media(max-width:920px){
+  .pour-cap{max-width:none;left:24px;right:24px;top:auto;bottom:8vh;transform:none}
+  .pour-side{display:none}
+  .pour-media{height:min(70vh,640px)}
+}
+
+/* ============ BRIDGE (about) ============ */
+.bridge{padding:clamp(90px,14vh,160px) 0}
+.bridge-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(40px,6vw,90px);align-items:center}
+.bridge .label{margin-bottom:26px}
+.bridge h2{font-size:clamp(38px,5.4vw,74px);margin-bottom:38px}
+.bridge .body-lg{margin-bottom:26px}
+.bridge-photo{position:relative}
+.bridge-photo img{width:100%;aspect-ratio:4/5;object-fit:cover;filter:saturate(.92) contrast(1.03)}
+.bridge-photo figcaption{
+  margin-top:14px;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--drift);
+  display:flex;justify-content:space-between;gap:10px;
+}
+
+/* ============ REELS ============ */
+.reels{padding:clamp(90px,14vh,160px) 0;border-top:1px dashed var(--cork)}
+.reels-head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:56px}
+.reels h2{font-size:clamp(38px,5.4vw,74px);margin-top:26px}
+.reels-note{max-width:300px}
+.reels-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.reel{
+  aspect-ratio:9/16;background:var(--bark);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  border:1px dashed var(--cork);transition:border-color .3s;
+}
+.reel:hover{border-color:var(--drift)}
+.reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.reel-ph{text-align:center;padding:26px}
+.reel-ph .num{font-size:12px;font-weight:500;letter-spacing:.26em;color:var(--ember);display:block;margin-bottom:16px}
+.reel-ph .t{font-size:15px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--cream)}
+.reel-ph p{margin-top:12px;font-size:13px;color:var(--cream-dim)}
+.reel-ph a{border-bottom:1px solid var(--ember);color:var(--cream)}
+
+/* ============ STATS ============ */
+.stats{border-top:1px dashed var(--cork);border-bottom:1px dashed var(--cork)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:clamp(40px,6vh,64px) 18px;text-align:center;border-left:1px dashed var(--cork)}
+.stat:first-child{border-left:none}
+.stat b{display:block;font-size:clamp(34px,4.4vw,60px);font-weight:500;line-height:1;color:var(--cream)}
+.stat i{font-style:normal;color:var(--ember)}
+.stat span{display:block;margin-top:14px;font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--drift)}
+
+/* ============ DOORS ============ */
+.doors{display:grid;grid-template-columns:1fr 1fr;min-height:70vh}
+.door{
+  display:flex;flex-direction:column;justify-content:flex-end;gap:22px;
+  padding:clamp(40px,7vh,90px) clamp(24px,4vw,60px);
+  border-left:1px dashed var(--cork);position:relative;overflow:hidden;
+  transition:background .5s;
+}
+.door:first-child{border-left:none}
+.door:hover{background:var(--bark)}
+.door .label{color:var(--drift);transition:color .4s}
+.door:hover .label{color:var(--ember)}
+.door h3{font-size:clamp(34px,4.6vw,64px);font-weight:500;text-transform:uppercase;line-height:.92}
+.door p{max-width:380px}
+.door .go{
+  font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--cream);
+  display:inline-flex;align-items:center;gap:10px;transition:gap .3s;
+}
+.door:hover .go{gap:18px}
+.door .go em{font-style:normal;color:var(--ember)}
+
+/* ============ FOOTER ============ */
+footer{border-top:1px dashed var(--cork);padding:clamp(50px,8vh,90px) 0 40px}
+.foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:34px;flex-wrap:wrap;margin-bottom:60px}
+.foot-grid img{height:44px;width:auto}
+.foot-links{display:flex;gap:clamp(20px,4vw,44px);flex-wrap:wrap}
+.foot-links a{
+  font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);
+  border-bottom:1px dashed transparent;padding-bottom:3px;transition:all .25s;
+}
+.foot-links a:hover{color:var(--cream);border-color:var(--ember)}
+.foot-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px dashed var(--cork);padding-top:22px}
+.foot-base span,.foot-base a{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--drift);font-weight:500}
+.foot-base a:hover{color:var(--ember)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:920px){
+  .burger{display:block}
+  .nav-links{
+    display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;
+    background:rgba(16,9,4,.97);padding:26px clamp(20px,4vw,48px) 34px;gap:22px;border-bottom:1px dashed var(--cork);
+  }
+  .nav-links.open{display:flex}
+  .bridge-grid{grid-template-columns:1fr}
+  .bridge-photo{max-width:440px}
+  .reels-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat:nth-child(odd){border-left:none}
+  .stat:nth-child(n+3){border-top:1px dashed var(--cork)}
+  .doors{grid-template-columns:1fr}
+  .door{border-left:none;border-top:1px dashed var(--cork);min-height:46vh}
+}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1!important;transform:none!important}
+  .cue{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a class="nav-logo" href="./"><img src="assets/logo-white.svg" alt="Conversing Coffee"></a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="codes/">Discount Codes</a>
+      <a href="media-kit/">Media Kit</a>
+      <a href="learn/">Learn</a>
+      <a class="nav-cta" href="mailto:contact@conversingcoffee.com">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="label rv">Speciality Coffee &nbsp;·&nbsp; Content Creator &nbsp;·&nbsp; London, UK</p>
+    <h1 class="h-display rv"><span>Espresso,</span><span>made easy<span class="dot">.</span></span></h1>
+    <p class="body-lg hero-sub rv">No gatekeeping. No silly questions. Just really good coffee, made in your own kitchen.</p>
+  </div>
+  <div class="cue" aria-hidden="true"></div>
+  <div class="hero-foot">
+    <div class="wrap">
+      <span>Abraham Akbareian</span>
+      <span>@ConversingCoffee</span>
+      <span>EST. the first great shot</span>
+    </div>
+  </div>
+</header>
+
+<!-- scroll-scrubbed pour -->
+<section class="pour" id="pour">
+  <div class="pour-stage" id="pourStage">
+    <div class="pour-media" id="pourMedia">
+      <video id="pourVideo" muted playsinline preload="auto" poster="assets/pour-poster.jpg" src="assets/pour.mp4"></video>
+    </div>
+    <div class="pour-cap" data-cap="0"><small>The Milk</small>Steamed<span class="dot">.</span></div>
+    <div class="pour-cap" data-cap="1"><small>The Pour</small>Poured<span class="dot">.</span></div>
+    <div class="pour-cap" data-cap="2"><small>The Signature</small>Signed<span class="dot">.</span></div>
+    <span class="pour-side">Free pour — rosetta — no edits</span>
+  </div>
+</section>
+
+<section class="bridge" id="about">
+  <div class="wrap">
+    <div class="bridge-grid">
+      <div>
+        <p class="label rv">01 — The Bridge</p>
+        <h2 class="h-display rv">Pro knowledge<span class="dot">.</span><br>Home kitchen<span class="dot">.</span></h2>
+        <p class="body-lg rv">I'm Abe — the face behind Conversing Coffee. I close the gap between what professional baristas know and what home enthusiasts actually get told.</p>
+        <p class="body-md rv">Complex brewing science, broken down into things you can actually use. Like dialling in your first machine, texturing milk that pours, choosing gear that's worth it. With a background in engineering and materials, I go deeper than "this tastes nice". I try to understand how these machines are built &amp; who they are aimed at. Then I help brands build them better and users gain a better experience.</p>
+      </div>
+      <figure class="bridge-photo rv">
+        <img src="images/abe-espresso.jpg" alt="Abraham Akbareian tasting an espresso" onerror="this.parentElement.style.display='none'">
+        <figcaption><span>Cup № ∞</span><span>Tasted, not wasted</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="reels" id="reels">
+  <div class="wrap">
+    <div class="reels-head">
+      <div>
+        <p class="label rv">02 — The Work</p>
+        <h2 class="h-display rv">Press play<span class="dot">.</span></h2>
+      </div>
+      <p class="body-md reels-note rv">1.6M+ views a month across Instagram and TikTok. Here's what that looks like.</p>
+    </div>
+    <div class="reels-grid" id="reelsGrid"></div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat rv"><b data-count="36.5" data-suffix="K">0</b><span>Instagram followers</span></div>
+    <div class="stat rv"><b data-count="1.6" data-suffix="M+"><i>0</i></b><span>IG views / 30 days</span></div>
+    <div class="stat rv"><b data-count="15.9" data-suffix="K">0</b><span>TikTok followers</span></div>
+    <div class="stat rv"><b data-count="250" data-suffix="K+"><i>0</i></b><span>TikTok views / 30 days</span></div>
+  </div>
+</section>
+
+<section class="doors">
+  <a class="door" href="codes/">
+    <p class="label">For the community</p>
+    <h3>Here for<br>the codes<span class="dot">.</span></h3>
+    <p class="body-md">Every discount I've negotiated with the brands I actually use — machines, gear, beans. Tap, copy, save.</p>
+    <span class="go">Open the toolkit <em>→</em></span>
+  </a>
+  <a class="door" href="media-kit/">
+    <p class="label">For brands &amp; media</p>
+    <h3>Here for<br>business<span class="dot">.</span></h3>
+    <p class="body-md">Content, campaigns, consulting on machines and product — plus the numbers and partners to back it up.</p>
+    <span class="go">Open the media kit <em>→</em></span>
+  </a>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <img src="assets/logo-white.svg" alt="Conversing Coffee">
+      <div class="foot-links">
+        <a href="https://www.instagram.com/conversingcoffee" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@conversingcoffee" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.buymeacoffee.com/Conversingcoffe" target="_blank" rel="noopener">Buy me a coffee</a>
+        <a href="mailto:contact@conversingcoffee.com">contact@conversingcoffee.com</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="yr"></span> Abraham Akbareian / Conversing Coffee</span>
+      <a href="media-kit/">Work with me</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ================= reels =================
+   Paste reel URLs below when ready — Instagram reel/post URLs or TikTok video URLs.
+   Example: const REELS=[ "https://www.instagram.com/reel/ABC123/", "https://www.tiktok.com/@conversingcoffee/video/7300000000" ]; */
+const REELS=[];
+
+const grid=document.getElementById('reelsGrid');
+function embedFor(url){
+  if(/instagram\.com/.test(url)){
+    const m=url.match(/\/(reel|p)\/([^\/\?]+)/);
+    if(m) return `<iframe src="https://www.instagram.com/${m[1]}/${m[2]}/embed" loading="lazy" allowfullscreen></iframe>`;
+  }
+  if(/tiktok\.com/.test(url)){
+    const m=url.match(/video\/(\d+)/);
+    if(m) return `<iframe src="https://www.tiktok.com/embed/v2/${m[1]}" loading="lazy" allowfullscreen></iframe>`;
+  }
+  return null;
+}
+const slots = REELS.length ? REELS.slice(0,3) : [null,null,null];
+slots.forEach((u,i)=>{
+  const d=document.createElement('div');d.className='reel rv';
+  const em=u&&embedFor(u);
+  d.innerHTML= em || `<div class="reel-ph">
+      <span class="num">Reel 0${i+1}</span>
+      <span class="t">Coming right up.</span>
+      <p>Meanwhile — it's all live on <a href="https://www.instagram.com/conversingcoffee" target="_blank" rel="noopener">@conversingcoffee</a></p>
+    </div>`;
+  grid.appendChild(d);
+});
+
+/* ================= nav ================= */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('on',scrollY>30),{passive:true});
+const burger=document.getElementById('burger'),links=document.getElementById('navLinks');
+burger.addEventListener('click',()=>links.classList.toggle('open'));
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+/* ================= motion ================= */
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+gsap.registerPlugin(ScrollTrigger);
+
+if(!reduced){
+  /* reveals */
+  document.querySelectorAll('.rv').forEach(el=>{
+    gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 88%'}});
+  });
+
+  /* stat counters */
+  document.querySelectorAll('.stat b').forEach(el=>{
+    const end=parseFloat(el.dataset.count), suf=el.dataset.suffix;
+    const obj={v:0};
+    gsap.to(obj,{v:end,duration:1.6,ease:'power2.out',
+      scrollTrigger:{trigger:el,start:'top 85%'},
+      onUpdate(){ el.textContent=(end%1?obj.v.toFixed(1):Math.round(obj.v))+suf; }});
+  });
+
+  /* ---- scroll-scrubbed pour ---- */
+  const video=document.getElementById('pourVideo');
+  const caps=document.querySelectorAll('.pour-cap');
+  let mode='video';
+
+  function buildFallback(){
+    mode='svg';
+    document.getElementById('pourMedia').innerHTML=`
+    <svg class="pour-svg" viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- portafilter -->
+      <g id="pf">
+        <rect x="90" y="20" width="120" height="26" rx="4" fill="#382416"/>
+        <rect x="205" y="24" width="70" height="16" rx="8" fill="#40372e"/>
+        <path d="M110 46 L190 46 L178 74 L122 74 Z" fill="#2a1a0e"/>
+        <rect x="138" y="74" width="24" height="10" fill="#1d1207"/>
+      </g>
+      <!-- streams -->
+      <rect id="s1" x="142" y="84" width="6" height="0" rx="3" fill="#8a4a1c"/>
+      <rect id="s2" x="152" y="84" width="6" height="0" rx="3" fill="#8a4a1c"/>
+      <!-- cup -->
+      <g>
+        <path d="M95 300 L205 300 L193 380 Q150 396 107 380 Z" fill="#1d1207" stroke="#40372e" stroke-width="1.5"/>
+        <clipPath id="cupclip"><path d="M97 302 L203 302 L191.5 379 Q150 394 108.5 379 Z"/></clipPath>
+        <g clip-path="url(#cupclip)">
+          <rect id="fill" x="90" y="392" width="120" height="0" fill="#5c300f"/>
+          <rect id="crema" x="90" y="392" width="120" height="0" fill="#b06a26"/>
+        </g>
+        <ellipse cx="230" cy="330" rx="26" ry="20" stroke="#40372e" stroke-width="10" fill="none"/>
+      </g>
+    </svg>`;
+  }
+
+  function pourProgress(p){
+    caps.forEach((c,i)=>{
+      const lo=i/3, hi=(i+1)/3;
+      let o=0;
+      if(p>lo&&p<hi){
+        const local=(p-lo)/(hi-lo);
+        o=Math.min(1,Math.min(local,1-local)*4);
+      }
+      c.style.opacity=o;
+    });
+    if(mode==='video'&&video.duration){
+      video.currentTime=Math.min(video.duration-.05,p*video.duration);
+    }else if(mode==='svg'){
+      const s=Math.min(1,p*2.2);                    // streams extend
+      const f=Math.max(0,Math.min(1,(p-.25)/.6));   // cup fills
+      const h1=216*s;
+      document.getElementById('s1')?.setAttribute('height',h1);
+      document.getElementById('s2')?.setAttribute('height',h1);
+      const fh=88*f;
+      const fill=document.getElementById('fill'),crema=document.getElementById('crema');
+      if(fill){fill.setAttribute('height',fh);fill.setAttribute('y',392-fh);}
+      if(crema){const ch=Math.min(14,fh*.3);crema.setAttribute('height',ch);crema.setAttribute('y',392-fh);}
+    }
+  }
+
+  video.addEventListener('error',buildFallback);
+  if(!video.getAttribute('src'))buildFallback();
+
+  ScrollTrigger.create({
+    trigger:'#pour',start:'top top',end:'+=250%',
+    pin:'#pourStage',scrub:.4,
+    onUpdate(self){pourProgress(self.progress)}
+  });
+}else{
+  document.querySelectorAll('.pour-cap')[2].style.opacity=1;
+}
+</script>
+</body>
+</html>

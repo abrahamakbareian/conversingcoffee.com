@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discount Codes — Conversing Coffee</title>
+<meta name="description" content="Exclusive coffee discount codes from Conversing Coffee — machines, espresso gear, beans and accessories from brands Abraham Akbareian actually uses.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.conversingcoffee.com/codes/">
+<meta property="og:title" content="Discount Codes — Conversing Coffee">
+<meta property="og:description" content="Tap, copy, save — exclusive codes for machines, gear and beans.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.filters{display:flex;gap:12px;flex-wrap:wrap;padding:34px 0 0}
+.chip{
+  background:none;border:1px dashed var(--cork);border-radius:22.5px;color:var(--cream-dim);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  padding:10px 20px;cursor:pointer;transition:all .25s;
+}
+.chip:hover{border-color:var(--drift);color:var(--cream)}
+.chip.on{border:1px solid var(--ember);color:var(--cream)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding-top:56px}
+.card{
+  background:var(--bark);border:1px dashed var(--cork);padding:30px;
+  display:flex;flex-direction:column;gap:14px;transition:border-color .3s,transform .3s;
+}
+.card:hover{border-color:var(--drift);transform:translateY(-4px)}
+.card.hide{display:none}
+.card .tag{font-size:10px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--ember)}
+.card h3{font-size:20px;font-weight:500;text-transform:uppercase;letter-spacing:.01em;line-height:1.1}
+.card p{font-size:13.5px;line-height:1.5;color:var(--cream-dim);flex-grow:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.code{
+  font-family:'Inter',monospace;font-size:13px;font-weight:500;letter-spacing:.08em;
+  border:1px dashed var(--ember);color:var(--cream);padding:9px 15px;background:none;cursor:pointer;
+  transition:all .25s;border-radius:2px;
+}
+.code:hover{background:rgba(220,80,0,.12)}
+.code.ok{background:var(--ember);color:var(--walnut);border-style:solid}
+.off{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--drift)}
+.visit{font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);display:inline-flex;gap:8px;transition:gap .25s}
+.visit:hover{gap:14px}
+.visit em{font-style:normal;color:var(--ember)}
+.support-card{border-style:solid;border-color:var(--cork)}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a class="nav-logo" href="../"><img src="../assets/logo-white.svg" alt="Conversing Coffee"></a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="./" class="now">Discount Codes</a>
+      <a href="../media-kit/">Media Kit</a>
+      <a href="../learn/">Learn</a>
+      <a class="nav-cta" href="mailto:contact@conversingcoffee.com">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="wrap">
+    <p class="label rv">The Toolkit — updated regularly</p>
+    <h1 class="h-display rv">Discount codes<span class="dot">.</span></h1>
+    <p class="body-md rv">Every brand here is one I've personally worked with. Tap a code to copy it, then save on the machines, gear and beans that actually make a difference.</p>
+    <div class="filters rv" id="filters"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <img src="../assets/logo-white.svg" alt="Conversing Coffee">
+      <div class="foot-links">
+        <a href="https://www.instagram.com/conversingcoffee" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@conversingcoffee" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.buymeacoffee.com/Conversingcoffe" target="_blank" rel="noopener">Buy me a coffee</a>
+        <a href="mailto:contact@conversingcoffee.com">contact@conversingcoffee.com</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="yr"></span> Abraham Akbareian / Conversing Coffee</span>
+      <a href="../media-kit/">Work with me</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+const deals=[
+ {cat:"Machines",name:"Maxim's La Seine X",desc:"An iconic collaboration — the La Seine X, Conversing Coffee Edition.",code:null,off:"Exclusive product page",url:"https://www.maximsespresso.com/products/maxims-la-seine-x-conversing-coffee"},
+ {cat:"Machines",name:"xBloom",desc:"A smart, automated speciality coffee machine that punches above its weight.",code:"xBloom-conversing",off:"Exclusive discount",url:"https://rb.gy/0e7nsq"},
+ {cat:"Machines",name:"Outin",desc:"Portable espresso for people who won't compromise on quality, even on the road.",code:"CONVERSINGCOFFEE",off:"10% off",url:"https://outin.com/?dt_id=1274416&_ga=2.1055090.2116297071.1709571057-720792358.1709287869"},
+ {cat:"Espresso Gear",name:"IKAPE Coffee",desc:"Quality espresso tools and accessories for the serious home barista.",code:null,off:"Exclusive discount via link",url:"https://pboost.me/Q0118P417"},
+ {cat:"Espresso Gear",name:"Aro Espresso",desc:"Precision espresso equipment built for those who take extraction seriously.",code:"CONV10.W26",off:"10% off",url:"https://aroespresso.com/"},
+ {cat:"Espresso Gear",name:"Laybird Coffee Tools",desc:"Precision tools designed to help home baristas extract better, every time.",code:"CONVERSING",off:"10% off",url:"https://www.laybirdcoffee.com/?bg_ref=IHMbWHd7ls"},
+ {cat:"Espresso Gear",name:"BooKoo Coffee — Themis Mini",desc:"A compact espresso tamper designed for consistency and feel.",code:"ABRAHAM",off:"5% off",url:"https://bookoocoffee.com/pxer4d"},
+ {cat:"Espresso Gear",name:"MHW-3Bomber",desc:"Premium coffee accessories — distributors, tampers, and tools built to last.",code:"CONVERSINGCOFFEE",off:"15% off",url:"https://mhw3bomber.com/discount/conversingcoffee"},
+ {cat:"Beans",name:"Sigma Coffee UK",desc:"UK speciality roaster with a thoughtful, considered selection of single origins.",code:"SIGMAXCVC",off:"5% off",url:"https://sigmacoffee.co.uk/products"},
+ {cat:"Beans",name:"Pact Coffee",desc:"Delicious coffee personalised for you.",code:"CONVERSING",off:"30% off — 3 subscription orders",url:"https://www.pactcoffee.com/coffee-plans/signup/step-1"},
+ {cat:"Beans",name:"Rave Coffee",desc:"Award-winning UK roastery. Fresh, seasonal, and consistently brilliant speciality roasts.",code:null,off:"£5 off via referral link",url:"https://i.refs.cc/dx1xmFJO?smile_ref=eyJzbWlsZV9zb3VyY2UiOiJzbWlsZV91aSIsInNtaWxlX21lZGl1bSI6IiIsInNtaWxlX2NhbXBhaWduIjoicmVmZXJyYWxfcHJvZ3JhbSIsInNtaWxlX2N1c3RvbWVyX2lkIjoyNjMyMjM1ODk4fQ%3D%3D"},
+ {cat:"Beans",name:"19g Coffee",desc:"Roasting and selling outstanding coffees since 2002.",code:"CONVERSING",off:"10% off",url:"https://www.19grams.coffee/discount/CONVERSING"},
+ {cat:"Beans",name:"Stay High Coffee",desc:"Speciality roasts with a distinct identity. Bold, interesting, and worth exploring.",code:"CONVERSINGCOFFEE10",off:"10% off",url:"https://www.stayhighcoffee.co.uk/"},
+ {cat:"Accessories",name:"FusedVisions",desc:"Handcrafted coffee accessories on Etsy — unique pieces made for the enthusiast.",code:"CONVERSING",off:"30% off",url:"https://www.etsy.com/uk/shop/FusedVisionsHQ"},
+ {cat:"Accessories",name:"Outpeak Global — Bean Storage",desc:"Seriously good bean storage. If you're buying quality coffee, store it properly.",code:"CONVERSINGCOFFEE",off:"13% off",url:"https://www.outpeakglobal.com/CONVERSINGCOFFEE"},
+ {cat:"Accessories",name:"HOTO Tools",desc:"Beautifully engineered precision tools — not just for coffee, but coffee is a great start.",code:"CC5",off:"5% off",url:"https://hototools.com/discount/CC5"},
+ {cat:"Accessories",name:"Amazon UK — My Storefront",desc:"My curated Amazon shop — every piece of gear I recommend in one place.",code:null,off:"Full gear list",url:"https://www.amazon.co.uk/shop/conversingcoffee?ref_=cm_sw_r_mwn_aipsfshop_3KDCS4BFTH6V8GRH5TC8_1&language=en_US"},
+ {cat:"Support",name:"Support the Channel",desc:"If this content has helped your coffee journey, buy me a coffee. It genuinely means a lot.",code:null,off:"Direct support",url:"https://www.buymeacoffee.com/Conversingcoffe",support:true}
+];
+
+const cats=["All","Machines","Espresso Gear","Beans","Accessories","Support"];
+const filters=document.getElementById('filters'), grid=document.getElementById('grid');
+
+cats.forEach((c,i)=>{
+  const b=document.createElement('button');
+  b.className='chip'+(i===0?' on':'');b.textContent=c;b.dataset.cat=c;
+  filters.appendChild(b);
+});
+
+deals.forEach(d=>{
+  const el=document.createElement('div');
+  el.className='card rv'+(d.support?' support-card':'');
+  el.dataset.cat=d.cat;
+  el.innerHTML=`
+    <span class="tag">${d.cat}</span>
+    <h3>${d.name}</h3>
+    <p>${d.desc}</p>
+    <div class="card-foot">
+      ${d.code?`<button class="code" data-code="${d.code}" title="Click to copy">${d.code} ⧉</button>`:``}
+      <span class="off">${d.off}</span>
+    </div>
+    <a class="visit" href="${d.url}" target="_blank" rel="noopener">Visit ${d.support?'page':'store'} <em>→</em></a>`;
+  grid.appendChild(el);
+});
+
+filters.addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b)return;
+  filters.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  b.classList.add('on');
+  const cat=b.dataset.cat;
+  grid.querySelectorAll('.card').forEach(c=>{
+    c.classList.toggle('hide',cat!=='All'&&c.dataset.cat!==cat);
+  });
+});
+
+grid.addEventListener('click',e=>{
+  const btn=e.target.closest('.code'); if(!btn)return;
+  navigator.clipboard.writeText(btn.dataset.code).then(()=>{
+    const t=btn.textContent;
+    btn.textContent='Copied ✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=t;btn.classList.remove('ok')},1500);
+  });
+});
+
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('on',scrollY>30),{passive:true});
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+gsap.registerPlugin(ScrollTrigger);
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.rv').forEach(el=>{
+    gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%'}});
+  });
+}
+</script>
+</body>
+</html>
