@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.conversingcoffee.com/sitemap.xml
+Sitemap: https://conversingcoffee.com/sitemap.xml
