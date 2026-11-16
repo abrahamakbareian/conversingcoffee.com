@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js')</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Conversing Coffee — Espresso, Made Easy | Abraham Akbareian</title>
@@ -60,7 +61,7 @@ img{display:block;max-width:100%}
 .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
 
 /* reveal */
-.rv{opacity:0;transform:translateY(30px)}
+.js .rv{opacity:0;transform:translateY(30px)}
 
 /* ============ NAV ============ */
 nav{
@@ -388,6 +389,7 @@ document.getElementById('yr').textContent=new Date().getFullYear();
 
 /* ================= motion ================= */
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!window.gsap||!window.ScrollTrigger){document.documentElement.classList.remove('js');throw new Error('Animation library failed to load; showing content without animation');}
 gsap.registerPlugin(ScrollTrigger);
 
 if(!reduced){

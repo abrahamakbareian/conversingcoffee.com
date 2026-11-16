@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js')</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learn — Milk Texturing & Latte Art Guide | Conversing Coffee</title>
@@ -174,6 +175,7 @@ const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('on',scrollY>30),{passive:true});
 document.getElementById('burger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
 document.getElementById('yr').textContent=new Date().getFullYear();
+if(!window.gsap||!window.ScrollTrigger){document.documentElement.classList.remove('js');throw new Error('Animation library failed to load; showing content without animation');}
 gsap.registerPlugin(ScrollTrigger);
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
   document.querySelectorAll('.rv').forEach(el=>{

@@ -16,7 +16,7 @@ img{display:block;max-width:100%}
 .body-md{font-weight:400;font-size:17px;line-height:1.55;color:var(--cream-dim)}
 .dot{color:var(--ember)}
 .dashed{border:none;border-top:1px dashed var(--cork)}
-.rv{opacity:0;transform:translateY(30px)}
+.js .rv{opacity:0;transform:translateY(30px)}
 @media(prefers-reduced-motion:reduce){.rv{opacity:1!important;transform:none!important}}
 
 /* nav */
