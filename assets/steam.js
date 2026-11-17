@@ -33,47 +33,44 @@
     var top = r.top;
     var roomy = h1.left > 170;               /* desktop: wand sits in the left margin */
     var s = roomy ? Math.min(1, W / 1440 + 0.15) : Math.max(0.55, W / 700);
-    var tipX = roomy ? h1.left - 34 * s : Math.min(W * 0.36, 140);
-    var tipY = roomy ? h1.top - top + h1.height * 0.18 : label.top - top - 20;
-    wand = { x: tipX, y: tipY, s: s, ang: roomy ? 0.32 : 0.62, m: roomy ? 1 : 0.55 };
+    var tipX = roomy ? h1.left - 20 * s : Math.min(W * 0.3, 112);
+    var tipY = roomy ? h1.top - top + h1.height * 0.12 : label.top - top - 34;
+    wand = { x: tipX, y: tipY, s: s, ang: roomy ? 0.62 : 0.7, m: roomy ? 1 : 0.55 };
   }
 
-  function tube(x1, y1, x2, y2, r, stops) {
-    var a = Math.atan2(y2 - y1, x2 - x1), L = Math.hypot(x2 - x1, y2 - y1);
-    ctx.save(); ctx.translate(x1, y1); ctx.rotate(a);
+  /* chrome: dark edges, a hard white highlight and a softer second reflection */
+  var CHROME = [[0, '#1a110b'], [0.12, '#5c4f44'], [0.26, '#fffaf2'], [0.34, '#f2e8dc'], [0.5, '#8a7d70'],
+                [0.66, '#2c2119'], [0.8, '#b9ad9f'], [0.9, '#4a3d32'], [1, '#120b06']];
+  function chrome(r) {
     var g = ctx.createLinearGradient(0, -r, 0, r);
-    for (var i = 0; i < stops.length; i++) g.addColorStop(stops[i][0], stops[i][1]);
-    ctx.fillStyle = g; ctx.fillRect(0, -r, L, 2 * r);
-    ctx.restore();
+    for (var i = 0; i < CHROME.length; i++) g.addColorStop(CHROME[i][0], CHROME[i][1]);
+    return g;
   }
-  var STEEL = [[0, '#2a1d14'], [0.16, '#9a8c7c'], [0.3, '#fff4e6'], [0.42, '#d8cbbb'], [0.7, '#5e5145'], [0.9, '#24180f'], [1, '#140c07']];
   function drawWand() {
-    var w = wand, s = w.s, r = 11 * s;
-    var wl = 150 * s, ca = Math.cos(w.ang), sa = Math.sin(w.ang);
-    var jx = w.x - ca * wl, jy = w.y - sa * wl;          /* ball joint */
-    /* arm from the left edge to the joint */
-    tube(-20, jy, jx, jy, r * 1.15, STEEL);
-    /* wand from joint to just behind the nozzle */
-    tube(jx, jy, w.x - ca * 22 * s, w.y - sa * 22 * s, r, STEEL);
-    /* insulated grip on the wand */
-    tube(jx + ca * 30 * s, jy + sa * 30 * s, jx + ca * 95 * s, jy + sa * 95 * s, r * 1.3,
-      [[0, '#0e0805'], [0.28, '#4d3d31'], [0.45, '#2b1f17'], [1, '#0a0503']]);
-    /* nozzle: tapered */
+    var w = wand, s = w.s;
+    var r = 12 * s, R = 17 * s, tipLen = 52 * s;   /* tube radius, bulb radius, bulb length */
     ctx.save(); ctx.translate(w.x, w.y); ctx.rotate(w.ang);
-    var gn = ctx.createLinearGradient(0, -r, 0, r);
-    gn.addColorStop(0, '#2a1d14'); gn.addColorStop(0.3, '#f3e6d6'); gn.addColorStop(0.6, '#7a6c5e'); gn.addColorStop(1, '#140c07');
-    ctx.fillStyle = gn; ctx.beginPath();
-    ctx.moveTo(-23 * s, -r); ctx.lineTo(-3 * s, -r * 0.7); ctx.lineTo(0, -r * 0.55);
-    ctx.lineTo(0, r * 0.55); ctx.lineTo(-3 * s, r * 0.7); ctx.lineTo(-23 * s, r); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#0a0503'; ctx.fillRect(-1.2 * s, -r * 0.5, 2 * s, r);
+    /* tube: from the bulb back off-screen */
+    ctx.fillStyle = chrome(r);
+    ctx.fillRect(-3000, -r, 3000 - tipLen + 4 * s, 2 * r);
+    /* bulb: short neck flaring into a rounded dome */
+    ctx.fillStyle = chrome(R);
+    ctx.beginPath();
+    ctx.moveTo(-tipLen, -r);
+    ctx.bezierCurveTo(-tipLen + 10 * s, -r, -tipLen + 14 * s, -R, -tipLen + 24 * s, -R);
+    ctx.lineTo(-R, -R);
+    ctx.arc(-R, 0, R, -Math.PI / 2, Math.PI / 2);
+    ctx.lineTo(-tipLen + 24 * s, R);
+    ctx.bezierCurveTo(-tipLen + 14 * s, R, -tipLen + 10 * s, r, -tipLen, r);
+    ctx.closePath(); ctx.fill();
+    /* specular glint on the dome */
+    var gl = ctx.createRadialGradient(-R * 0.55, -R * 0.45, 0, -R * 0.55, -R * 0.45, R * 0.9);
+    gl.addColorStop(0, 'rgba(255,250,242,.95)'); gl.addColorStop(0.35, 'rgba(255,250,242,.25)'); gl.addColorStop(1, 'rgba(255,250,242,0)');
+    ctx.fillStyle = gl; ctx.beginPath(); ctx.arc(-R, 0, R, -Math.PI / 2, Math.PI / 2); ctx.lineTo(-R, -R); ctx.fill();
+    /* faint ember rim light along the underside */
+    ctx.strokeStyle = 'rgba(220,80,0,.25)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(-3000, r - 0.5); ctx.lineTo(-tipLen, r - 0.5); ctx.stroke();
     ctx.restore();
-    /* ball joint */
-    var jr = r * 1.55, gj = ctx.createRadialGradient(jx - jr * 0.35, jy - jr * 0.4, jr * 0.1, jx, jy, jr);
-    gj.addColorStop(0, '#fff4e6'); gj.addColorStop(0.35, '#a99b8a'); gj.addColorStop(0.8, '#3a2c22'); gj.addColorStop(1, '#140c07');
-    ctx.fillStyle = gj; ctx.beginPath(); ctx.arc(jx, jy, jr, 0, Math.PI * 2); ctx.fill();
-    /* warm rim light from the ember accent */
-    ctx.strokeStyle = 'rgba(220,80,0,.28)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(-20, jy + r * 1.15 - 0.5); ctx.lineTo(jx, jy + r * 1.15 - 0.5); ctx.stroke();
   }
 
   /* flow: a strong purge on load that settles into a gentle stream, with slow breathing */
@@ -88,11 +85,11 @@
       if (Math.random() > n) break;
       n -= 1;
       var sp = (700 + Math.random() * 500) * s * wand.m * (0.7 + 0.5 * Math.min(1, flow(t)));
-      var spread = (Math.random() - 0.5) * 0.22 - 0.18;
+      var spread = (Math.random() - 0.5) * 0.4 - 0.45;
       parts.push({
-        x: wand.x + ca * 2, y: wand.y + sa * 2,
+        x: wand.x + ca * 1, y: wand.y + sa * 1,
         vx: sp * Math.cos(wand.ang + spread), vy: sp * Math.sin(wand.ang + spread),
-        r: (2 + Math.random() * 3) * s, g: (22 + Math.random() * 38) * s,
+        r: (5 + Math.random() * 5) * s, g: (22 + Math.random() * 38) * s,
         a: 0, life: 0, max: 2.2 + Math.random() * 2.6, seed: Math.random() * 100
       });
     }
@@ -112,7 +109,7 @@
       p.x += p.vx * dt; p.y += p.vy * dt;
       p.r = Math.min(p.r + p.g * dt, 85 * wand.s);
       var k = p.life / p.max;
-      p.a = Math.min(1, p.life * 6) * (1 - k) * (1 - k);
+      p.a = Math.min(1, 0.35 + p.life * 14) * (1 - k) * (1 - k);
     }
   }
   function draw() {
