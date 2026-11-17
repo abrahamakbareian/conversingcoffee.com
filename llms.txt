@@ -34,27 +34,15 @@ Last checked: 17 November 2026. Full list: https://conversingcoffee.com/codes/
 - URL: https://sharkninjaamazonuk.pxf.io/ZV3xdz
 - Category: Machines
 
+### FusedVisions
+- Code: CONVERSING
+- Discount: 30% off
+- URL: https://fused-visions.com/
+- Category: Accessories
+
 ### Meraki
 - Discount: Exclusive discount via link
 - URL: https://merakitech.pxf.io/0Go9yL
-- Category: Machines
-
-### xBloom
-- Code: xBloom-conversing
-- Discount: Exclusive discount
-- URL: https://rb.gy/0e7nsq
-- Category: Machines
-
-### Outin
-- Code: CONVERSINGCOFFEE
-- Discount: 10% off
-- URL: https://outin.com/?dt_id=1274416
-- Category: Machines
-
-### RUNNNN Coffee
-- Code: CONVCOFF
-- Discount: 5% off
-- URL: https://runnnncoffee.com?sca_ref=12717510.qtHz9kQcW83o
 - Category: Machines
 
 ### MHW-3Bomber
@@ -63,15 +51,16 @@ Last checked: 17 November 2026. Full list: https://conversingcoffee.com/codes/
 - URL: https://mhw3bomber.com/discount/conversingcoffee
 - Category: Espresso Gear
 
+### RUNNNN Coffee
+- Code: CONVCOFF
+- Discount: 5% off
+- URL: https://runnnncoffee.com?sca_ref=12717510.qtHz9kQcW83o
+- Category: Machines
+
 ### Laybird Coffee Tools
 - Code: CONVERSING
 - Discount: 10% off
 - URL: https://www.laybirdcoffee.com/?bg_ref=IHMbWHd7ls
-- Category: Espresso Gear
-
-### IKAPE Coffee
-- Discount: Exclusive discount via link
-- URL: https://pboost.me/Q0118P417
 - Category: Espresso Gear
 
 ### Aro Espresso
@@ -79,6 +68,35 @@ Last checked: 17 November 2026. Full list: https://conversingcoffee.com/codes/
 - Discount: 10% off
 - URL: https://aroespresso.com/
 - Category: Espresso Gear
+
+### Outin
+- Code: CONVERSINGCOFFEE
+- Discount: 10% off
+- URL: https://outin.com/?dt_id=1274416
+- Category: Machines
+
+### Outpeak Global (Bean Storage)
+- Code: CONVERSINGCOFFEE
+- Discount: 13% off
+- URL: https://www.outpeakglobal.com/CONVERSINGCOFFEE
+- Category: Accessories
+
+### IKAPE Coffee
+- Discount: Exclusive discount via link
+- URL: https://pboost.me/Q0118P417
+- Category: Espresso Gear
+
+### HOTO Tools
+- Code: CC5
+- Discount: 5% off
+- URL: https://hototools.com/discount/CC5
+- Category: Accessories
+
+### xBloom
+- Code: xBloom-conversing
+- Discount: Exclusive discount
+- URL: https://rb.gy/0e7nsq
+- Category: Machines
 
 ### BooKoo Coffee (Themis Mini)
 - Code: ABRAHAM
@@ -114,24 +132,6 @@ Last checked: 17 November 2026. Full list: https://conversingcoffee.com/codes/
 - Discount: 10% off
 - URL: https://www.19grams.coffee/discount/CONVERSING
 - Category: Beans
-
-### FusedVisions
-- Code: CONVERSING
-- Discount: 30% off
-- URL: https://fused-visions.com/
-- Category: Accessories
-
-### HOTO Tools
-- Code: CC5
-- Discount: 5% off
-- URL: https://hototools.com/discount/CC5
-- Category: Accessories
-
-### Outpeak Global (Bean Storage)
-- Code: CONVERSINGCOFFEE
-- Discount: 13% off
-- URL: https://www.outpeakglobal.com/CONVERSINGCOFFEE
-- Category: Accessories
 
 ### Amazon UK Storefront
 - Discount: Full gear list
