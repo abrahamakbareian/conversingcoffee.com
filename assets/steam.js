@@ -37,10 +37,11 @@
     var s = roomy ? Math.min(1, W / 1440 + 0.15) : Math.max(0.55, W / 700);
     var tipX = roomy ? h1.left - 20 * s : Math.min(W * 0.3, 112);
     var tipY = roomy ? h1.top - top + h1.height * 0.12 : label.top - top - 34;
-    var ang = roomy ? 0.62 : 0.7, L = (roomy ? 420 : 300) * s;
+    /* the pivot is fixed on the left edge of the screen, like an arm bolted to the side */
+    var ang = roomy ? 0.62 : 0.7, L = tipX / Math.cos(ang);
     wand = { s: s, m: roomy ? 1 : 0.55, roomy: roomy, rest: ang, ang: ang, target: ang, L: L,
-             px: tipX - L * Math.cos(ang), py: tipY - L * Math.sin(ang),
-             min: roomy ? 0.12 : 0.15, max: roomy ? 1.05 : 1.2 };
+             px: 0, py: tipY - tipX * Math.tan(ang),
+             min: roomy ? -0.3 : -0.2, max: roomy ? 1.2 : 1.25 };
     place();
   }
   function place() {
