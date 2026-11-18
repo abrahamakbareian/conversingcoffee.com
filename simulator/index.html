@@ -34,6 +34,9 @@
 .stage svg{display:block;width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
 .stage .tip{position:absolute;right:14px;top:12px;text-align:right;max-width:46%;line-height:1.5;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--drift);font-weight:500;pointer-events:none}
 #pf{cursor:grab}
+#tamper{touch-action:none}
+#tamper.ready{animation:tglow 1.1s ease-in-out infinite}
+@keyframes tglow{0%,100%{filter:drop-shadow(0 0 0 rgba(220,80,0,0))}50%{filter:drop-shadow(0 0 7px rgba(255,120,40,.9))}}
 #pf.drag{cursor:grabbing}
 .drop{opacity:0;transition:opacity .3s}
 .drop.show{opacity:1}
@@ -92,7 +95,7 @@
 /* Crema the mascot */
 .crema{position:fixed;right:clamp(10px,2vw,28px);bottom:clamp(10px,2vw,24px);z-index:150;display:flex;align-items:flex-end;gap:6px;pointer-events:none;transform:translateY(160%);opacity:0;transition:transform .7s cubic-bezier(.2,1.3,.4,1),opacity .4s}
 .crema.on{transform:none;opacity:1}
-.crema-btn{pointer-events:auto;background:none;border:0;padding:0;cursor:pointer;width:118px;flex:none}
+.crema-btn{pointer-events:auto;background:none;border:0;padding:0;cursor:pointer;width:132px;flex:none}
 .crema-svg{width:100%;height:auto;overflow:visible;display:block;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45))}
 .bubble{pointer-events:auto;position:relative;max-width:330px;background:#ffedd7;color:#1e0f06;border-radius:18px;padding:16px 18px;margin-bottom:84px;box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:15px;line-height:1.5;transform-origin:100% 100%;transition:transform .35s cubic-bezier(.2,1.4,.4,1),opacity .25s}
 .bubble::after{content:"";position:absolute;right:-9px;bottom:22px;border:10px solid transparent;border-left-color:#ffedd7;border-right:0}
@@ -121,13 +124,13 @@
 .crema[data-face=shock] .brows-worried,.crema[data-face=shock] .sweat{display:inline}
 .crema[data-face=shock] .m-smile{display:none}.crema[data-face=shock] .m-o{display:inline}
 .crema[data-face=think] .m-smile{display:none}.crema[data-face=think] .m-o{display:inline}
-.crema[data-face=think] .pupils{transform:translate(4px,-2px)}
+.crema[data-face=think] .pupils{transform:translate(-4px,-3px)}
 /* motion */
-.crema-svg .cup{transform-origin:63px 110px;animation:bob 2.6s ease-in-out infinite}
-.crema-svg .eyes-open{transform-origin:64px 62px;animation:blink 4.2s infinite}
-.crema-svg .hair{transform-origin:63px 22px;animation:sway 2.2s ease-in-out infinite}
+.crema-svg .cup{transform-origin:68px 112px;animation:bob 2.6s ease-in-out infinite}
+.crema-svg .eyes-open{transform-origin:68px 66px;animation:blink 4.2s infinite}
+.crema-svg .hair{transform-origin:69px 26px;animation:sway 2.2s ease-in-out infinite}
 .crema-svg .pupils{transition:transform .3s}
-.crema-svg .armR{transform-origin:100px 72px}
+.crema-svg .armR{transform-origin:22px 66px}
 .crema.wave .armR{animation:wave .5s ease-in-out 4}
 .crema.hop .crema-svg{animation:hop .55s cubic-bezier(.3,1.6,.5,1) 3}
 .crema.shake .cup{animation:shake .12s linear 8}
@@ -136,12 +139,12 @@
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-4px) rotate(2deg)}}
 @keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
 @keyframes sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
-@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-24deg)}}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(22deg)}}
 @keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-22px)}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px) rotate(-2deg)}75%{transform:translateX(2px) rotate(2deg)}}
 @keyframes stepL{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @media(max-width:700px){
-  .crema-btn{width:78px}
+  .crema-btn{width:86px}
   .bubble{max-width:calc(100vw - 110px);font-size:14px;padding:13px 14px;margin-bottom:56px}
   main.wrap{padding-bottom:120px}
 }
@@ -234,7 +237,7 @@
           </pattern>
           <filter id="soft" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
           <clipPath id="cupClip"><path d="M413 376 L467 376 L463 402 Q440 407 417 402 Z"/></clipPath>
-          <clipPath id="basketClip"><path d="M-36 -2 L36 -2 L31 20 L-31 20 Z"/></clipPath>
+          <clipPath id="moundClip"><rect x="-40" y="-40" width="80" height="41"/></clipPath>
           <clipPath id="hopperClip"><path d="M158 118 L165 52 L255 52 L262 118 Z"/></clipPath>
           <radialGradient id="bean" cx=".35" cy=".35"><stop offset="0" stop-color="#8a5028"/><stop offset="1" stop-color="#2f170a"/></radialGradient>
         </defs>
@@ -399,8 +402,8 @@
 
         <!-- espresso streams -->
         <g id="streams" opacity="0">
-          <path id="s1" d="M434 372 L434 402" stroke="#6b3815" stroke-width="3" stroke-linecap="round" fill="none"/>
-          <path id="s2" d="M446 372 L446 402" stroke="#6b3815" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path id="s1" d="M425 372 L425 402" stroke="#6b3815" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path id="s2" d="M455 372 L455 402" stroke="#6b3815" stroke-width="3" stroke-linecap="round" fill="none"/>
         </g>
         <g id="drips"></g>
 
@@ -413,25 +416,41 @@
         <rect id="zGroup" class="drop" x="398" y="326" width="84" height="48" rx="8" fill="none" stroke="#dc5000" stroke-width="2" stroke-dasharray="6 5"/>
 
         <!-- portafilter (origin = basket centre top) -->
-        <g id="pf" transform="translate(64 476)">
-          <ellipse cx="44" cy="40" rx="70" ry="5" fill="#000" opacity=".35" filter="url(#soft)" id="pfShadow"/>
-          <rect x="-41" y="-6" width="82" height="7" rx="3" fill="url(#chromeH)"/>
-          <path d="M-38 0 L38 0 L32 22 L-32 22 Z" fill="url(#chrome)" stroke="#4d4a47" stroke-width="1"/>
-          <g clip-path="url(#basketClip)">
-            <ellipse id="mound" cx="0" cy="-1" rx="32" ry="0" fill="url(#grounds)"/>
-            <rect id="tamped" x="-34" y="-1" width="68" height="0" fill="url(#grounds)"/>
-          </g>
-          <path d="M-10 22 L10 22 L8 29 L-8 29 Z" fill="url(#chromeH)"/>
-          <path d="M-8 29 L-11 37 M8 29 L11 37" stroke="#8a8783" stroke-width="3.5" stroke-linecap="round"/>
-          <rect x="38" y="2" width="22" height="10" rx="3" fill="url(#chrome)"/>
-          <rect x="58" y="0" width="92" height="14" rx="7" fill="url(#dark)"/>
-          <g stroke="rgba(255,255,255,.08)" stroke-width="1.2">
-            <line x1="70" y1="2" x2="70" y2="12"/><line x1="78" y1="2" x2="78" y2="12"/><line x1="86" y1="2" x2="86" y2="12"/><line x1="94" y1="2" x2="94" y2="12"/>
-          </g>
-          <rect x="62" y="2" width="84" height="2" rx="1" fill="rgba(255,255,255,.14)"/>
+        <!-- tamper: rests on the counter, right of the machine -->
+        <g id="tamper" transform="translate(604 470)" style="cursor:grab">
+          <ellipse cx="0" cy="2" rx="22" ry="4" fill="#000" opacity=".4" filter="url(#soft)" id="tShadow"/>
+          <path d="M-8 -26 Q-12 -40 -10 -50 Q-8 -62 0 -62 Q8 -62 10 -50 Q12 -40 8 -26 Z" fill="url(#dark)" stroke="#000" stroke-width="1"/>
+          <path d="M-5 -56 Q-6 -46 -4 -32" stroke="rgba(255,255,255,.18)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <rect x="-4" y="-28" width="8" height="10" fill="url(#chromeH)"/>
+          <rect x="-21" y="-18" width="42" height="16" rx="3" fill="url(#chromeH)"/>
+          <ellipse cx="0" cy="-2" rx="21" ry="3.5" fill="#6e6b67"/>
+          <ellipse cx="0" cy="-18" rx="21" ry="3.5" fill="#e9e6e2"/>
+        </g>
+        <text id="tamperLbl" x="604" y="506" text-anchor="middle" font-size="8" letter-spacing="1.6" fill="#8d8983" font-family="Inter,sans-serif">TAMPER</text>
+
+        <!-- portafilter (origin = basket rim centre). Handle points towards you, angled right. -->
+        <g id="pf" transform="translate(64 440)">
+          <ellipse cx="18" cy="56" rx="62" ry="6" fill="#000" opacity=".4" filter="url(#soft)" id="pfShadow"/>
+          <!-- handle: comes out of the basket towards the viewer, down and to the right -->
+          <path d="M6 12 L18 10 L54 50 Q56 58 48 60 Q40 62 36 56 Z" fill="url(#dark)" stroke="#000" stroke-width="1"/>
+          <path d="M18 14 L50 50" stroke="rgba(255,255,255,.16)" stroke-width="2.5" stroke-linecap="round"/>
+          <ellipse cx="45" cy="57" rx="10" ry="6" transform="rotate(-38 45 57)" fill="#2a2b2e" stroke="#000" stroke-width="1"/>
+          <!-- spouts -->
+          <path d="M-18 24 L-8 24 L-10 32 L-16 32 Z M8 24 L18 24 L16 32 L10 32 Z" fill="url(#chromeH)"/>
+          <path d="M-14 32 L-15 37 M14 32 L15 37" stroke="#8a8783" stroke-width="3" stroke-linecap="round"/>
+          <!-- basket -->
+          <path d="M-40 0 L40 0 L35 22 Q0 28 -35 22 Z" fill="url(#chrome)" stroke="#4d4a47" stroke-width="1"/>
+          <path d="M-36 6 L-32 20" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/>
+          <!-- handle neck in front of the basket -->
+          <path d="M2 8 L20 6 L24 16 L8 18 Z" fill="url(#chrome)" stroke="#4d4a47" stroke-width=".8"/>
+          <!-- rim and contents seen from slightly above -->
+          <ellipse cx="0" cy="0" rx="40" ry="7" fill="url(#chromeH)"/>
+          <ellipse cx="0" cy="0" rx="35" ry="5" fill="#141516"/>
+          <ellipse id="tamped" cx="0" cy=".5" rx="35" ry="4.6" fill="#3a200f" opacity="0"/>
+          <g clip-path="url(#moundClip)"><ellipse id="mound" cx="0" cy="1" rx="34" ry="0" fill="url(#grounds)"/></g>
         </g>
       </svg>
-      <span class="tip" id="stageTip">Drag or tap the portafilter</span>
+      <span class="tip" id="stageTip">Drag or tap to move things</span>
     </div>
 
     <div class="panel">
@@ -453,7 +472,7 @@
       </div>
 
       <button class="act" id="act">Grind 18g</button>
-      <p class="note" id="note">Step 1 of 3 · Grind your coffee</p>
+      <p class="note" id="note">Step 1 of 4 · Grind your coffee</p>
 
       <div class="card">
         <h3>Your shots</h3>
@@ -476,67 +495,82 @@
     <div class="bbtns" id="bbtns"></div>
   </div>
   <button class="crema-btn" id="cremaBtn" aria-label="Show or hide Crema's tips">
-  <svg class="crema-svg" viewBox="0 0 130 150" aria-hidden="true">
+  <svg class="crema-svg" viewBox="-8 -12 156 168" aria-hidden="true">
     <g class="legs">
-      <path d="M52 108 C 48 120, 40 124, 40 132" stroke="#ffedd7" stroke-width="8.5" fill="none" stroke-linecap="round" opacity=".9"/>
-      <path d="M74 108 C 78 120, 86 124, 86 132" stroke="#ffedd7" stroke-width="8.5" fill="none" stroke-linecap="round" opacity=".9"/>
-      <path d="M52 108 C 48 120, 40 124, 40 134" stroke="#1e0f06" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <path class="legR" d="M74 108 C 78 120, 86 124, 86 134" stroke="#1e0f06" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <g class="shoeL"><path d="M26 134 Q26 126 38 126 Q50 126 50 134 Q50 141 38 141 Q24 141 26 134 Z" fill="#dc5000" stroke="#1e0f06" stroke-width="3"/><path d="M27 138 Q38 143 49 137" stroke="#ffedd7" stroke-width="2.5" fill="none"/></g>
-      <g class="shoeR"><path d="M76 134 Q76 126 88 126 Q100 126 100 134 Q100 141 88 141 Q74 141 76 134 Z" fill="#dc5000" stroke="#1e0f06" stroke-width="3"/><path d="M77 137 Q88 143 99 138" stroke="#ffedd7" stroke-width="2.5" fill="none"/></g>
+      <!-- stride: back leg and front leg, cream outline so they read on dark backgrounds -->
+      <path d="M58 108 C 54 120, 46 126, 40 134" stroke="#ffedd7" stroke-width="9" fill="none" stroke-linecap="round" opacity=".85"/>
+      <path d="M80 108 C 84 118, 92 124, 92 134" stroke="#ffedd7" stroke-width="9" fill="none" stroke-linecap="round" opacity=".85"/>
+      <path d="M58 108 C 54 120, 46 126, 40 134" stroke="#1e0f06" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M80 108 C 84 118, 92 124, 92 134" stroke="#1e0f06" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g class="shoeL"><path d="M22 136 Q20 124 34 124 Q46 124 50 132 Q52 140 40 142 L26 142 Q20 142 22 136 Z" fill="#dc5000" stroke="#1e0f06" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M21 139 Q36 146 51 138 L50 142 Q36 149 22 143 Z" fill="#1e0f06"/><path d="M30 128 Q34 126 38 128" stroke="#ffb27a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+      <g class="shoeR"><path d="M84 136 Q82 124 96 124 Q108 124 112 132 Q114 140 102 142 L88 142 Q82 142 84 136 Z" fill="#dc5000" stroke="#1e0f06" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M83 139 Q98 146 113 138 L112 142 Q98 149 84 143 Z" fill="#1e0f06"/><path d="M92 128 Q96 126 100 128" stroke="#ffb27a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
     </g>
     <g class="cup">
-      <!-- handle on the left -->
-      <path d="M24 52 C 4 50, 2 82, 26 82" stroke="#1e0f06" stroke-width="11" fill="none" stroke-linecap="round"/>
-      <path d="M24 52 C 4 50, 2 82, 26 82" stroke="#f6ead9" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <!-- arms -->
+      <!-- handle on the right -->
+      <path d="M114 52 C 140 46, 142 86, 112 86" stroke="#1e0f06" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <path d="M114 52 C 140 46, 142 86, 112 86" stroke="#f3e5d3" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <!-- hanging arm (right side, in front of handle) -->
       <g class="armL">
-        <path d="M30 76 C 18 86, 14 94, 16 100" stroke="#ffedd7" stroke-width="8" fill="none" stroke-linecap="round" opacity=".9"/>
-        <path d="M30 76 C 18 86, 14 94, 16 100" stroke="#1e0f06" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-        <g transform="translate(15 106) rotate(170)"><path d="M-8 6 Q-12 -2 -9 -8 Q-7 -13 -3 -10 Q-2 -15 2 -14 Q5 -15 6 -10 Q10 -12 11 -7 Q13 -1 9 5 Q4 10 -2 10 Q-7 10 -8 6 Z" fill="#fff" stroke="#1e0f06" stroke-width="2.6" stroke-linejoin="round"/><path d="M-3 -9 L-2 -2 M2 -10 L2 -2 M6 -8 L5 -1" stroke="#1e0f06" stroke-width="1.4" stroke-linecap="round"/><rect x="-7" y="7" width="15" height="6" rx="3" fill="#fff" stroke="#1e0f06" stroke-width="2.4"/></g>
+        <path d="M112 74 C 124 84, 128 92, 126 100" stroke="#ffedd7" stroke-width="8" fill="none" stroke-linecap="round" opacity=".85"/>
+        <path d="M112 74 C 124 84, 128 92, 126 100" stroke="#1e0f06" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <g transform="translate(127 108) rotate(-8)">
+          <path d="M-12 -4 Q-15 6 -10 13 Q-6 18 -1 15 Q2 19 6 16 Q10 18 12 12 Q16 4 12 -4 Q6 -9 0 -8 Q-7 -9 -12 -4 Z" fill="#fff" stroke="#1e0f06" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M-5 6 L-5 14 M1 7 L1 15 M6 6 L7 13" stroke="#1e0f06" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M-13 -6 Q0 -12 13 -6 L12 -1 Q0 -6 -12 -1 Z" fill="#fff" stroke="#1e0f06" stroke-width="2.6" stroke-linejoin="round"/>
+        </g>
       </g>
+      <!-- waving arm (left side) -->
       <g class="armR">
-        <path d="M100 72 C 110 66, 116 58, 116 50" stroke="#ffedd7" stroke-width="8" fill="none" stroke-linecap="round" opacity=".9"/>
-        <path d="M100 72 C 110 66, 116 58, 116 50" stroke="#1e0f06" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-        <g transform="translate(117 40) rotate(8)"><path d="M-8 6 Q-12 -2 -9 -8 Q-7 -13 -3 -10 Q-2 -15 2 -14 Q5 -15 6 -10 Q10 -12 11 -7 Q13 -1 9 5 Q4 10 -2 10 Q-7 10 -8 6 Z" fill="#fff" stroke="#1e0f06" stroke-width="2.6" stroke-linejoin="round"/><path d="M-3 -9 L-2 -2 M2 -10 L2 -2 M6 -8 L5 -1" stroke="#1e0f06" stroke-width="1.4" stroke-linecap="round"/><rect x="-7" y="7" width="15" height="6" rx="3" fill="#fff" stroke="#1e0f06" stroke-width="2.4"/></g>
+        <path d="M22 66 C 10 60, 6 52, 8 42" stroke="#ffedd7" stroke-width="8" fill="none" stroke-linecap="round" opacity=".85"/>
+        <path d="M22 66 C 10 60, 6 52, 8 42" stroke="#1e0f06" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <g transform="translate(8 32) rotate(-14)">
+          <path d="M-12 8 Q-16 -2 -12 -10 Q-10 -16 -6 -13 Q-6 -21 -1 -20 Q3 -22 4 -15 Q8 -21 11 -16 Q14 -11 12 -3 Q16 -6 18 -2 Q18 4 12 9 Q6 15 -2 15 Q-9 15 -12 8 Z" fill="#fff" stroke="#1e0f06" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M-6 -12 L-5 -2 M0 -18 L0 -3 M5 -15 L5 -3" stroke="#1e0f06" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M-12 12 Q0 18 12 12 L11 18 Q0 23 -11 18 Z" fill="#fff" stroke="#1e0f06" stroke-width="2.6" stroke-linejoin="round"/>
+        </g>
       </g>
-      <!-- body -->
-      <path d="M22 34 Q24 92 46 106 Q63 114 80 106 Q102 92 104 34 Z" fill="#f6ead9" stroke="#1e0f06" stroke-width="3.5" stroke-linejoin="round"/>
-      <path d="M90 44 Q92 82 76 100" stroke="#e3d2bc" stroke-width="7" fill="none" stroke-linecap="round"/>
-      <rect x="44" y="104" width="38" height="7" rx="3" fill="#e3d2bc" stroke="#1e0f06" stroke-width="3"/>
-      <!-- rim + crema -->
-      <ellipse cx="63" cy="34" rx="41" ry="11" fill="#f6ead9" stroke="#1e0f06" stroke-width="3.5"/>
-      <ellipse cx="63" cy="35" rx="34" ry="7.5" fill="#b0652b"/>
-      <path d="M44 35 Q56 30 66 35 Q76 40 84 34" stroke="#e7ac6d" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <circle cx="52" cy="37" r="1.6" fill="#7a3d15"/><circle cx="76" cy="33" r="1.3" fill="#7a3d15"/>
+      <!-- bowl -->
+      <path d="M16 40 C 16 82, 36 106, 68 107 C 100 106, 120 82, 120 40 Z" fill="#f6ead9" stroke="#1e0f06" stroke-width="3.6" stroke-linejoin="round"/>
+      <path d="M120 42 C 120 78, 104 100, 78 106 C 100 96, 110 74, 108 44 Z" fill="#e6d2b9"/>
+      <path d="M26 54 C 28 70, 34 82, 42 90" stroke="#fffaf2" stroke-width="5" fill="none" stroke-linecap="round" opacity=".9"/>
+      <ellipse cx="68" cy="108" rx="24" ry="5.5" fill="#e6d2b9" stroke="#1e0f06" stroke-width="3.2"/>
+      <!-- rim and coffee -->
+      <ellipse cx="68" cy="40" rx="52" ry="14" fill="#f6ead9" stroke="#1e0f06" stroke-width="3.6"/>
+      <ellipse cx="68" cy="41" rx="44" ry="9.5" fill="#3a1a0a"/>
+      <path d="M26 42 Q68 30 110 42 Q100 36 68 34 Q36 36 26 42 Z" fill="#c07a3e" opacity=".9"/>
+      <path d="M44 44 Q60 39 76 43 Q90 47 100 41" stroke="#d99a5c" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <circle cx="40" cy="42" r="2" fill="#d99a5c"/><circle cx="48" cy="39" r="1.4" fill="#d99a5c"/><circle cx="92" cy="38" r="1.7" fill="#d99a5c"/><circle cx="99" cy="42" r="1.2" fill="#d99a5c"/>
       <!-- steam curl hair -->
-      <path class="hair" d="M64 22 C 56 14, 70 8, 62 -2" stroke="#ffedd7" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".85"/>
+      <path class="hair" d="M70 26 C 60 16, 78 8, 68 -4" stroke="#ffedd7" stroke-width="3.6" fill="none" stroke-linecap="round" opacity=".85"/>
       <!-- face -->
       <g class="face">
-        <ellipse cx="48" cy="80" rx="6" ry="3" fill="#dc5000" opacity=".22"/><ellipse cx="82" cy="80" rx="6" ry="3" fill="#dc5000" opacity=".22"/>
+        <ellipse cx="46" cy="84" rx="7" ry="3.5" fill="#dc5000" opacity=".2"/><ellipse cx="92" cy="84" rx="7" ry="3.5" fill="#dc5000" opacity=".2"/>
         <g class="eyes eyes-open">
-          <ellipse cx="54" cy="62" rx="7" ry="10" fill="#fff" stroke="#1e0f06" stroke-width="2.5"/>
-          <ellipse cx="74" cy="62" rx="7" ry="10" fill="#fff" stroke="#1e0f06" stroke-width="2.5"/>
+          <ellipse cx="57" cy="66" rx="8.5" ry="12.5" fill="#fff" stroke="#1e0f06" stroke-width="3"/>
+          <ellipse cx="80" cy="66" rx="8.5" ry="12.5" fill="#fff" stroke="#1e0f06" stroke-width="3"/>
           <g class="pupils">
-            <path d="M51 58 a4 6 0 1 0 6 0 l-3 3 Z" fill="#1e0f06"/>
-            <path d="M71 58 a4 6 0 1 0 6 0 l-3 3 Z" fill="#1e0f06"/>
+            <ellipse cx="60" cy="68" rx="4.6" ry="7" fill="#1e0f06"/><ellipse cx="83" cy="68" rx="4.6" ry="7" fill="#1e0f06"/>
+            <ellipse cx="61.6" cy="64.5" rx="1.6" ry="2.2" fill="#fff"/><ellipse cx="84.6" cy="64.5" rx="1.6" ry="2.2" fill="#fff"/>
           </g>
         </g>
         <g class="eyes eyes-happy">
-          <path d="M47 64 Q54 55 61 64" stroke="#1e0f06" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <path d="M67 64 Q74 55 81 64" stroke="#1e0f06" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M48 68 Q57 56 66 68" stroke="#1e0f06" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M71 68 Q80 56 89 68" stroke="#1e0f06" stroke-width="4" fill="none" stroke-linecap="round"/>
         </g>
         <g class="brows-worried">
-          <path d="M46 52 Q52 50 58 46" stroke="#1e0f06" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M82 52 Q76 50 70 46" stroke="#1e0f06" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M47 49 Q54 47 61 42 M90 49 Q83 47 76 42" stroke="#f6ead9" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M47 49 Q54 47 61 42" stroke="#1e0f06" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M90 49 Q83 47 76 42" stroke="#1e0f06" stroke-width="3.2" fill="none" stroke-linecap="round"/>
         </g>
-        <path class="mouth m-smile" d="M54 80 Q64 90 74 80" stroke="#1e0f06" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path class="mouth m-grin" d="M52 78 Q64 98 76 78 Z" fill="#5a1d06" stroke="#1e0f06" stroke-width="3" stroke-linejoin="round"/>
-        <path class="mouth m-frown" d="M55 86 Q64 78 73 86" stroke="#1e0f06" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse class="mouth m-o" cx="64" cy="83" rx="4.5" ry="5.5" fill="#5a1d06" stroke="#1e0f06" stroke-width="2.5"/>
-        <path class="mouth m-wavy" d="M53 84 q4 -4 7 0 t7 0 t7 0" stroke="#1e0f06" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M66 79 q3 3 6 0" stroke="#1e0f06" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path class="mouth m-smile" d="M54 86 Q68 98 82 86" stroke="#1e0f06" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <path class="mouth m-grin" d="M53 84 Q68 106 83 84 Z" fill="#5a1d06" stroke="#1e0f06" stroke-width="3" stroke-linejoin="round"/>
+        <path class="mouth m-frown" d="M57 94 Q68 84 79 94" stroke="#1e0f06" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <ellipse class="mouth m-o" cx="68" cy="90" rx="5" ry="6" fill="#5a1d06" stroke="#1e0f06" stroke-width="2.6"/>
+        <path class="mouth m-wavy" d="M55 91 q4.5 -4 9 0 t9 0 t9 0" stroke="#1e0f06" stroke-width="3" fill="none" stroke-linecap="round"/>
       </g>
-      <path class="sweat" d="M98 48 Q104 58 98 62 Q92 58 98 48 Z" fill="#9fd3ff" stroke="#1e0f06" stroke-width="2"/>
-      <g class="sparkle"><path d="M110 18 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z" fill="#ffd27a" stroke="#1e0f06" stroke-width="1.5"/><path d="M14 22 l2 4 l4 2 l-4 2 l-2 4 l-2 -4 l-4 -2 l4 -2 Z" fill="#ffd27a" stroke="#1e0f06" stroke-width="1.2"/></g>
+      <path class="sweat" d="M108 54 Q115 65 108 69 Q101 65 108 54 Z" fill="#9fd3ff" stroke="#1e0f06" stroke-width="2"/>
+      <g class="sparkle"><path d="M126 6 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z" fill="#ffd27a" stroke="#1e0f06" stroke-width="1.5"/><path d="M-2 4 l2 4 l4 2 l-4 2 l-2 4 l-2 -4 l-4 -2 l4 -2 Z" fill="#ffd27a" stroke="#1e0f06" stroke-width="1.2"/></g>
     </g>
   </svg>
   </button>

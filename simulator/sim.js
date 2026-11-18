@@ -41,7 +41,9 @@
   var zG = $('zGrinder'), zH = $('zGroup');
 
   /* portafilter spots: basket centre top. Grinder spot rests on the left scale. */
-  var SPOT = { home: [64, 476], grinder: [215, 368], group: [440, 332] };
+  var SPOT = { home: [64, 434], grinder: [215, 367], group: [440, 333] };
+  var TAMPER = { home: [604, 470], over: [215, 336], press: [215, 369] };
+  var tamper = $('tamper'), tShadow = $('tShadow'), tpos = TAMPER.home.slice();
   var pos = SPOT.home.slice(), rot = 0;
   var state = 'empty', grind = M.start, shots = [], knobAng = 0;
 
@@ -165,37 +167,68 @@
       }, 28);
       return tween(2400, function (k, now) {
         var dose = M.dose * (1 - Math.pow(1 - k, 1.6));
-        mound.setAttribute('ry', (k * 13).toFixed(1));
+        mound.setAttribute('ry', (k * 12).toFixed(1));
         mDose.textContent = dose.toFixed(1) + 'g';
         body.setAttribute('transform', 'translate(' + (Math.sin(now / 18) * 0.6).toFixed(2) + ' 0)');
         beans.setAttribute('transform', 'translate(0 ' + (k * 6).toFixed(1) + ')');
         gStream.setAttribute('stroke-dashoffset', (now / 12).toFixed(1));
       }).then(function () {
         clearInterval(spawn); body.removeAttribute('transform'); gStream.setAttribute('opacity', 0); mDose.textContent = '18.0g';
-        return wait(250);
-      }).then(function () {
-        /* tamp: the mound presses flat with a small bounce */
-        return tween(420, function (k) {
-          var b = back(k);
-          mound.setAttribute('ry', Math.max(0, 13 * (1 - b)).toFixed(1));
-          tamped.setAttribute('height', Math.max(0, 9 * b).toFixed(1));
-        });
       });
     }).then(function () {
-      state = 'ground'; zones('group');
-      setStep('Lock into group head', 'Step 2 of 3 · Move the portafilter to the machine', true);
-      crema('18 grams, nice and level. Now <b>drag it up into the group head</b> and lock it in.', 'smile');
+      state = 'ground'; zones('grinder'); tamper.classList.add('ready');
+      setStep('Tamp', 'Step 2 of 4 · Tamp the coffee flat', true);
+      crema('18 grams. Now <b>grab the tamper</b> on the right and press it down on the coffee. Firm and level!', 'smile');
+    });
+  }
+  function setT(x, y, r) {
+    tpos = [x, y];
+    tamper.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + (r || 0).toFixed(1) + ')');
+  }
+  function tamperTo(pt, ms) {
+    var a = tpos.slice(), lift = 50;
+    tShadow.style.opacity = 0;
+    return tween(ms || 650, function (k) {
+      var e = ease(k);
+      setT(a[0] + (pt[0] - a[0]) * e, a[1] + (pt[1] - a[1]) * e - Math.sin(Math.PI * e) * lift, -8 * Math.sin(Math.PI * e));
+    });
+  }
+  function doTamp() {
+    if (state !== 'ground') return;
+    state = 'tamping'; zones(null); tamper.classList.remove('ready');
+    setStep('Tamping…', '', false);
+    var ry0 = +mound.getAttribute('ry');
+    return tamperTo(TAMPER.over).then(function () {
+      /* press: tamper goes down, mound squashes flat */
+      return tween(420, function (k) {
+        var e = ease(k);
+        setT(TAMPER.over[0], TAMPER.over[1] + (TAMPER.press[1] - TAMPER.over[1]) * e, 0);
+        mound.setAttribute('ry', (ry0 * (1 - e)).toFixed(1));
+        tamped.setAttribute('opacity', e.toFixed(2));
+      });
+    }).then(function () {
+      /* polish twist */
+      return tween(300, function (k) { setT(TAMPER.press[0] + Math.sin(k * Math.PI * 2) * 1.5, TAMPER.press[1], Math.sin(k * Math.PI * 2) * 4); });
+    }).then(function () {
+      return tween(260, function (k) { setT(TAMPER.press[0], TAMPER.press[1] - 30 * ease(k), 0); });
+    }).then(function () {
+      return tamperTo(TAMPER.home, 600);
+    }).then(function () {
+      tShadow.style.opacity = 1;
+      state = 'tamped'; zones('group');
+      setStep('Lock into group head', 'Step 3 of 4 · Move the portafilter to the machine', true);
+      crema('Lovely flat puck. Now <b>drag the portafilter up into the group head</b> and lock it in.', 'excited');
     });
   }
   function doLock() {
-    if (state !== 'ground') return;
+    if (state !== 'tamped') return;
     state = 'locking'; zones(null); mDose.textContent = '0.0g';
     setStep('Locking in…', '', false);
     return moveTo('group').then(function () {
       return tween(380, function (k) { setPF(SPOT.group[0], SPOT.group[1] - 3 * Math.sin(Math.PI * k), -10 * Math.sin(Math.PI * k)); });
     }).then(function () {
       state = 'locked';
-      setStep('Double shot', 'Step 3 of 3 · Hit 2 CUP or the button below', true);
+      setStep('Double shot', 'Step 4 of 4 · Hit 2 CUP or the button below', true);
       crema('Locked in. <b>Hit 2 CUP</b> and watch the timer and the scale.', 'excited');
     });
   }
@@ -230,13 +263,13 @@
       var flowing = !s.choke && t > preinf && k < 0.985;
       /* pre-infusion and choked shots drip; normal shots stream */
       if (!flowing && k < 0.985 && t > 1.5 && now - lastDrip > (s.choke ? 260 : 140)) {
-        lastDrip = now; drop(434 + (Math.random() < 0.5 ? 0 : 12), 370, 400 - Math.min(24, y * 0.7), cols[1]);
+        lastDrip = now; drop(425 + (Math.random() < 0.5 ? 0 : 30), 370, 400 - Math.min(24, y * 0.7), cols[1]);
       }
       streams.setAttribute('opacity', flowing ? 1 : 0);
       if (flowing) {
         var surf = 402 - Math.min(24, y * 0.68);
         var col = k > 0.75 ? cols[0] : cols[2];      /* blonding near the end */
-        [[s1, 434], [s2, 446]].forEach(function (p) {
+        [[s1, 425], [s2, 455]].forEach(function (p) {
           p[0].setAttribute('d', streamPath(p[1], 371, surf, now, width * 0.7));
           p[0].setAttribute('stroke-width', (width * (0.85 + Math.sin(now / 70 + p[1]) * 0.15)).toFixed(2));
           p[0].setAttribute('stroke', col);
@@ -270,14 +303,14 @@
     return tween(260, function (k) { setPF(SPOT.group[0], SPOT.group[1] + 2 * Math.sin(Math.PI * k), 10 * Math.sin(Math.PI * k)); })
       .then(function () { return moveTo('home', 650); })
       .then(function () {
-        return tween(240, function (k) { setPF(SPOT.home[0], SPOT.home[1] - 6 * Math.sin(Math.PI * k), 0); if (k > 0.5) tamped.setAttribute('height', 0); });
+        return tween(240, function (k) { setPF(SPOT.home[0], SPOT.home[1] - 6 * Math.sin(Math.PI * k), 0); if (k > 0.5) tamped.setAttribute('opacity', 0); });
       }).then(function () {
-        tamped.setAttribute('height', 0); mound.setAttribute('ry', 0);
+        tamped.setAttribute('opacity', 0); mound.setAttribute('ry', 0);
         var h0 = +liquid.getAttribute('height');
         tween(400, function (k) { var h = h0 * (1 - k); liquid.setAttribute('height', h.toFixed(1)); liquid.setAttribute('y', (404 - h).toFixed(1)); cupSteam.setAttribute('opacity', (0.8 * (1 - k)).toFixed(2)); });
         readout(0, 0);
         state = 'empty'; lockGrind(false); zones('grinder');
-        setStep('Grind 18g', 'Step 1 of 3 · Grind your coffee', true);
+        setStep('Grind 18g', 'Step 1 of 4 · Grind your coffee', true);
       });
   }
 
@@ -333,7 +366,7 @@
 
   /* ---------- controls ---------- */
   act.addEventListener('click', function () {
-    if (state === 'empty') doGrind(); else if (state === 'ground') doLock();
+    if (state === 'empty') doGrind(); else if (state === 'ground') doTamp(); else if (state === 'tamped') doLock();
     else if (state === 'locked') doShot(); else if (state === 'done') knockOut();
   });
   $('dblBtn').addEventListener('click', function () { if (state === 'locked') doShot(); });
@@ -345,7 +378,8 @@
   function svgPt(e) { var p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
   var drag = null;
   pf.addEventListener('pointerdown', function (e) {
-    if (state !== 'empty' && state !== 'ground') return;
+    if (state === 'ground') { crema('Tamp it first! <b>Grab the tamper</b> on the right.', 'smile'); return; }
+    if (state !== 'empty' && state !== 'tamped') return;
     e.preventDefault();
     var p = svgPt(e);
     drag = { dx: pos[0] - p.x, dy: pos[1] - p.y, moved: false, lx: p.x };
@@ -370,6 +404,35 @@
   }
   pf.addEventListener('pointerup', endDrag);
   pf.addEventListener('pointercancel', endDrag);
+
+  /* drag (or tap) the tamper onto the coffee */
+  var tdrag = null;
+  tamper.addEventListener('pointerdown', function (e) {
+    if (state !== 'ground') {
+      if (state === 'empty') crema('Grind some coffee first, then we\'ll tamp it.', 'smile');
+      return;
+    }
+    e.preventDefault();
+    var p = svgPt(e);
+    tdrag = { dx: tpos[0] - p.x, dy: tpos[1] - p.y, moved: false };
+    tamper.setPointerCapture(e.pointerId); tShadow.style.opacity = 0;
+  });
+  tamper.addEventListener('pointermove', function (e) {
+    if (!tdrag) return;
+    var p = svgPt(e);
+    var x = Math.max(30, Math.min(620, p.x + tdrag.dx)), y = Math.max(80, Math.min(480, p.y + tdrag.dy));
+    if (Math.hypot(x - tpos[0], y - tpos[1]) > 2) tdrag.moved = true;
+    setT(x, y, 0);
+  });
+  function endT() {
+    if (!tdrag) return;
+    var moved = tdrag.moved; tdrag = null;
+    var near = Math.hypot(tpos[0] - TAMPER.over[0], tpos[1] - TAMPER.over[1]) < 80;
+    if (!moved || near) doTamp();
+    else tamperTo(TAMPER.home, 450).then(function () { tShadow.style.opacity = 1; crema('Close! Drop the tamper on the coffee.', 'smile'); });
+  }
+  tamper.addEventListener('pointerup', endT);
+  tamper.addEventListener('pointercancel', endT);
 
   /* start */
   setPF(SPOT.home[0], SPOT.home[1], 0);
