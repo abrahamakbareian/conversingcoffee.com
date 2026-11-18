@@ -138,6 +138,11 @@ Last checked: 17 November 2026. Full list: https://conversingcoffee.com/codes/
 - URL: https://www.amazon.co.uk/shop/conversingcoffee
 - Category: Accessories
 
+## Espresso Simulator
+
+A free interactive espresso dialling-in trainer: https://conversingcoffee.com/simulator/
+Users grind, lock in and pull virtual double shots with a fixed 18g dose, aiming for 36g in 25 to 30 seconds (1:2 ratio). The only variable is grind size, which teaches that finer grinds slow the shot and coarser grinds speed it up. The first machine is modelled on a Barista Express-style machine with a 0 to 16 grind dial.
+
 ## Support
 
 - Buy Me a Coffee: https://www.buymeacoffee.com/Conversingcoffe

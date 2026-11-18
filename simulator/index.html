@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.classList.add('js')</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espresso Simulator: Learn to Dial In | Conversing Coffee</title>
+<meta name="description" content="Pull virtual espresso shots and learn how grind size changes shot time. Fixed 18g dose, double shot, target 36g in 25 to 30 seconds. A free dialling-in trainer from Conversing Coffee.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://conversingcoffee.com/simulator/">
+<meta property="og:title" content="Espresso Simulator | Conversing Coffee">
+<meta property="og:description" content="Grind, tamp, pull. Learn to dial in espresso without wasting a single bean.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.page-hero{padding:clamp(120px,16vh,160px) 0 clamp(36px,5vh,56px)}
+.page-hero h1{font-size:clamp(44px,7vw,96px)}
+.page-hero p{margin-top:22px}
+.result{scroll-margin-top:90px}
+.rules{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.rules span{border:1px dashed var(--cork);padding:10px 16px;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--cream)}
+.rules span b{color:var(--ember);font-weight:500}
+
+.picker{display:flex;gap:10px;flex-wrap:wrap;margin:clamp(28px,4vh,40px) 0 18px}
+.picker button{font:inherit;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;background:none;color:var(--cream-dim);border:1px solid var(--cork);border-radius:22px;padding:11px 20px;cursor:pointer;transition:all .25s}
+.picker button.on{border-color:var(--ember);color:var(--cream);background:rgba(220,80,0,.08)}
+.picker button[disabled]{cursor:not-allowed;opacity:.55}
+.picker button small{font-size:10px;color:var(--drift);margin-left:6px;letter-spacing:.12em}
+
+.sim{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,1fr);gap:clamp(22px,3vw,40px);align-items:start}
+.stage{position:relative;background:radial-gradient(120% 90% at 50% 20%,#24170d 0%,var(--walnut) 70%);border:1px dashed var(--cork);border-radius:6px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.stage .tip{position:absolute;right:14px;top:12px;text-align:right;max-width:46%;line-height:1.5;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--drift);font-weight:500;pointer-events:none}
+#pf{cursor:grab}
+#pf.drag{cursor:grabbing}
+.drop{opacity:0;transition:opacity .3s}
+.drop.show{opacity:1}
+
+.panel{display:flex;flex-direction:column;gap:18px}
+.card{border:1px dashed var(--cork);padding:22px}
+.card h3{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ember);margin-bottom:14px}
+.grind-row{display:flex;align-items:center;gap:14px}
+.grind-row .num{font-size:64px;font-weight:500;line-height:1;min-width:2.1ch;text-align:center;font-variant-numeric:tabular-nums}
+.step{width:46px;height:46px;border-radius:50%;border:1px solid var(--cork);background:none;color:var(--cream);font:inherit;font-size:22px;cursor:pointer;transition:all .2s}
+.step:hover:not([disabled]){border-color:var(--cream)}
+.step[disabled]{opacity:.35;cursor:not-allowed}
+.grind input[type=range]{width:100%;margin:18px 0 6px;accent-color:var(--ember)}
+.scale-lbl{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim)}
+.grind.pulse{animation:pulse 1.4s ease 2}
+@keyframes pulse{0%,100%{border-color:var(--cork)}50%{border-color:var(--ember);background:rgba(220,80,0,.06)}}
+
+.read{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.read div{border:1px solid var(--cork);padding:12px 6px}
+.read b{display:block;font-size:26px;font-weight:500;font-variant-numeric:tabular-nums}
+.read span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim)}
+.read .good b{color:#9fd18b}
+
+.act{font:inherit;font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;background:var(--ember);color:var(--walnut);border:0;border-radius:28px;padding:18px 24px;cursor:pointer;transition:transform .15s,opacity .2s}
+.act:hover:not([disabled]){transform:translateY(-1px)}
+.act[disabled]{opacity:.45;cursor:default}
+.note{font-size:13px;color:var(--cream-dim);line-height:1.5;text-align:center}
+
+.result{display:none}
+.result.show{display:block}
+.verdict{font-size:24px;font-weight:500;text-transform:uppercase;line-height:1.05;margin-bottom:8px}
+.verdict.ok{color:#9fd18b}
+.verdict.warn{color:#f0b35c}
+.verdict.bad{color:#ff7a45}
+.taste{font-size:14px;color:var(--cream-dim);margin-bottom:14px}
+.coach{font-size:15.5px;line-height:1.6;color:var(--cream);border-left:1px solid var(--ember);padding-left:16px;margin:14px 0}
+.coach b{color:var(--ember);font-weight:500}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btns button,.btns a{font:inherit;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;background:none;color:var(--cream);border:1px solid var(--cream);border-radius:22px;padding:11px 18px;cursor:pointer}
+.btns .pri{background:var(--cream);color:var(--walnut)}
+.btns button[disabled]{opacity:.4;cursor:default}
+
+.log{list-style:none;font-size:13px;font-variant-numeric:tabular-nums}
+.log li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;padding:8px 0;border-bottom:1px dashed rgba(64,55,46,.7);color:var(--cream-dim)}
+.log li b{color:var(--cream);font-weight:500}
+.log li i{font-style:normal}
+.log .ok i{color:#9fd18b}.log .warn i{color:#f0b35c}.log .bad i{color:#ff7a45}
+.log:empty::before{content:"No shots yet.";color:var(--drift)}
+
+.how{max-width:760px;margin:clamp(70px,10vh,110px) auto 0;padding:0 clamp(20px,4vw,48px)}
+.how h2{font-size:clamp(26px,3.4vw,40px);font-weight:500;text-transform:uppercase;line-height:1;margin-bottom:22px}
+.how p{font-size:17px;line-height:1.65;color:var(--cream-dim);margin-bottom:16px}
+.how p b{color:var(--cream);font-weight:500}
+
+@media(max-width:900px){.sim{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.grind.pulse{animation:none}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a class="nav-logo" href="../"><img src="../assets/logo-white.svg" alt="Conversing Coffee"></a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="../codes/">Discount Codes</a>
+      <a href="../media-kit/">Media Kit</a>
+      <a href="../learn/">Learn</a>
+      <a href="./" class="now">Simulator</a>
+      <a class="nav-cta" href="mailto:contact@conversingcoffee.com">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="wrap">
+    <p class="label rv">Simulator · Dial in without wasting beans</p>
+    <h1 class="h-display rv">Pull a shot<span class="dot">.</span></h1>
+    <p class="body-md rv">Grind, lock in, pull. See what happened, change one thing, and go again. That's all dialling in is, and this lets you practise it without binning a bag of beans.</p>
+    <div class="rules rv">
+      <span>Dose <b>18g</b> · always</span>
+      <span>Double shot</span>
+      <span>Target <b>36g</b> in <b>25–30s</b></span>
+      <span>Ratio <b>1:2</b></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="picker rv" role="tablist" aria-label="Choose a machine">
+    <button class="on" role="tab" aria-selected="true">Sage Barista Express</button>
+    <button role="tab" aria-selected="false" disabled>Ninja Luxe Café <small>Coming soon</small></button>
+  </div>
+
+  <section class="sim" aria-label="Espresso simulator">
+    <div class="stage">
+      <svg id="machine" viewBox="0 0 640 520" role="img" aria-label="Illustrated espresso machine with a built-in grinder">
+        <defs>
+          <linearGradient id="steel" x1="0" x2="1">
+            <stop offset="0" stop-color="#1c1d1f"/><stop offset=".07" stop-color="#4a4d51"/>
+            <stop offset=".5" stop-color="#5a5d61"/><stop offset=".93" stop-color="#46494d"/><stop offset="1" stop-color="#1a1b1d"/>
+          </linearGradient>
+          <linearGradient id="steelV" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#b9b6b2"/><stop offset=".5" stop-color="#85827e"/><stop offset="1" stop-color="#4b4946"/>
+          </linearGradient>
+          <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2a2b2e"/><stop offset="1" stop-color="#121315"/>
+          </linearGradient>
+          <linearGradient id="glass" x1="0" x2="1">
+            <stop offset="0" stop-color="rgba(255,240,225,.28)"/><stop offset=".25" stop-color="rgba(255,240,225,.08)"/>
+            <stop offset=".8" stop-color="rgba(255,240,225,.05)"/><stop offset="1" stop-color="rgba(255,240,225,.22)"/>
+          </linearGradient>
+          <linearGradient id="espresso" x1="0" y1="0" x2="0" y2="1">
+            <stop id="crema1" offset="0" stop-color="#c98a4b"/><stop id="crema2" offset=".22" stop-color="#8a4f22"/><stop offset="1" stop-color="#2a1408"/>
+          </linearGradient>
+          <clipPath id="cupClip"><path d="M409 366 L471 366 L466 418 Q440 424 414 418 Z"/></clipPath>
+          <clipPath id="basketClip"><path d="M-36 -4 L36 -4 L30 18 L-30 18 Z"/></clipPath>
+          <radialGradient id="bean" cx=".35" cy=".35"><stop offset="0" stop-color="#7a4422"/><stop offset="1" stop-color="#2f170a"/></radialGradient>
+        </defs>
+
+        <!-- counter -->
+        <rect x="0" y="470" width="640" height="50" fill="#1a110b"/>
+        <rect x="0" y="469" width="640" height="2" fill="#3a2a1e"/>
+
+        <!-- bean hopper -->
+        <g id="hopper">
+          <path d="M150 112 L158 34 L262 34 L270 112 Z" fill="url(#glass)" stroke="rgba(255,240,225,.35)" stroke-width="1.5"/>
+          <g id="beans" clip-path="url(#hopperClip)"></g>
+          <rect x="152" y="24" width="116" height="12" rx="4" fill="url(#dark)"/>
+        </g>
+        <clipPath id="hopperClip"><path d="M152 111 L159 50 L261 50 L268 111 Z"/></clipPath>
+
+        <!-- body -->
+        <rect x="120" y="110" width="440" height="330" rx="20" fill="url(#steel)"/>
+        <rect x="120" y="110" width="440" height="12" rx="6" fill="#6a6d71" opacity=".9"/>
+        <!-- grinder panel -->
+        <rect x="150" y="140" width="130" height="190" rx="12" fill="url(#dark)"/>
+        <text x="215" y="166" text-anchor="middle" font-size="10" letter-spacing="2" fill="#a99a8a" font-family="Inter,sans-serif">GRIND SIZE</text>
+        <text id="mGrind" x="215" y="204" text-anchor="middle" font-size="34" font-weight="500" fill="#ffedd7" font-family="Inter,sans-serif">10</text>
+        <text x="215" y="224" text-anchor="middle" font-size="9" letter-spacing="1.5" fill="#6c5f51" font-family="Inter,sans-serif">FINE ← → COARSE</text>
+        <rect x="203" y="238" width="24" height="26" rx="3" fill="#0c0806"/>
+        <rect x="208" y="262" width="14" height="10" rx="2" fill="#0c0806"/>
+        <!-- grinder cradle -->
+        <path d="M168 300 L176 300 L178 312 M262 300 L254 300 L252 312" stroke="#8f8c88" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+        <!-- right control panel -->
+        <circle cx="470" cy="160" r="34" fill="#e9e6e1" stroke="#85827e" stroke-width="5"/>
+        <path d="M447 176 A28 28 0 1 1 493 176" stroke="#d8cfc4" stroke-width="5" fill="none"/>
+        <path d="M478 140 A28 28 0 0 1 493 176" stroke="#dc5000" stroke-width="5" fill="none" opacity=".75"/>
+        <line id="needle" x1="470" y1="160" x2="470" y2="134" stroke="#1c1410" stroke-width="3" stroke-linecap="round" transform="rotate(-125 470 160)"/>
+        <circle cx="470" cy="160" r="4" fill="#1c1410"/>
+        <text x="470" y="186" text-anchor="middle" font-size="7" letter-spacing="1" fill="#6c5f51" font-family="Inter,sans-serif">PRESSURE</text>
+        <!-- timer screen -->
+        <rect x="320" y="140" width="96" height="44" rx="6" fill="#0c0806"/>
+        <text id="mTime" x="368" y="171" text-anchor="middle" font-size="22" font-weight="500" fill="#ffb27a" font-family="Inter,sans-serif">0.0s</text>
+        <!-- buttons -->
+        <g font-family="Inter,sans-serif" font-size="8" fill="#6c5f51" text-anchor="middle">
+          <circle cx="330" cy="214" r="13" fill="url(#dark)"/><text x="330" y="240">POWER</text>
+          <circle cx="370" cy="214" r="13" fill="url(#dark)"/><text x="370" y="240">1 CUP</text>
+          <g id="dblBtn" style="cursor:pointer">
+            <circle cx="410" cy="214" r="15" fill="url(#dark)" stroke="#dc5000" stroke-width="2.5"/>
+            <circle cx="404" cy="214" r="3" fill="#ffedd7"/><circle cx="416" cy="214" r="3" fill="#ffedd7"/>
+            <text x="410" y="242" fill="#dc5000">2 CUP</text>
+          </g>
+        </g>
+        <!-- group head -->
+        <rect x="402" y="252" width="76" height="22" rx="5" fill="url(#steelV)"/>
+        <rect x="408" y="272" width="64" height="12" rx="3" fill="#2b241f"/>
+        <!-- steam wand -->
+        <rect x="532" y="214" width="16" height="16" rx="4" fill="url(#dark)"/>
+        <path d="M540 230 L548 330" stroke="#8f8c88" stroke-width="7" stroke-linecap="round"/>
+        <!-- drip tray -->
+        <rect x="140" y="426" width="400" height="28" rx="8" fill="url(#steelV)"/>
+        <g stroke="#3a3b3e" stroke-width="2">
+          <line x1="160" y1="432" x2="520" y2="432"/><line x1="160" y1="438" x2="520" y2="438"/>
+        </g>
+        <rect x="140" y="452" width="400" height="18" rx="6" fill="#2a2b2e"/>
+
+        <!-- scale + cup -->
+        <rect x="396" y="418" width="88" height="10" rx="3" fill="#1c1410"/>
+        <rect id="scaleScr" x="420" y="440" width="40" height="12" rx="2" fill="#0c0806"/>
+        <text id="mYield" x="440" y="449.5" text-anchor="middle" font-size="9" fill="#ffb27a" font-family="Inter,sans-serif">0.0g</text>
+        <g clip-path="url(#cupClip)">
+          <rect id="liquid" x="400" y="420" width="80" height="0" fill="url(#espresso)"/>
+        </g>
+        <path d="M409 366 L471 366 L466 418 Q440 424 414 418 Z" fill="url(#glass)" stroke="rgba(255,240,225,.45)" stroke-width="1.5"/>
+        <path d="M471 378 Q488 380 486 394 Q484 406 468 404" fill="none" stroke="rgba(255,240,225,.4)" stroke-width="3"/>
+
+        <!-- espresso streams -->
+        <g id="streams" opacity="0">
+          <line id="s1" x1="434" y1="322" x2="434" y2="414" stroke="#6b3815" stroke-width="3" stroke-linecap="round"/>
+          <line id="s2" x1="446" y1="322" x2="446" y2="414" stroke="#6b3815" stroke-width="3" stroke-linecap="round"/>
+        </g>
+
+        <!-- grounds falling -->
+        <g id="grounds"></g>
+
+        <!-- drop zones -->
+        <rect id="zGrinder" class="drop" x="170" y="290" width="90" height="50" rx="8" fill="none" stroke="#dc5000" stroke-width="2" stroke-dasharray="6 5"/>
+        <rect id="zGroup" class="drop" x="398" y="280" width="84" height="46" rx="8" fill="none" stroke="#dc5000" stroke-width="2" stroke-dasharray="6 5"/>
+
+        <!-- portafilter (local origin = basket centre top) -->
+        <g id="pf" transform="translate(78 486)">
+          <path d="M-40 -6 L40 -6 L34 20 L-34 20 Z" fill="url(#steelV)" stroke="#5c554f" stroke-width="1.5"/>
+          <g clip-path="url(#basketClip)">
+            <ellipse id="mound" cx="0" cy="-4" rx="34" ry="0" fill="#3a2010"/>
+            <rect id="tamped" x="-36" y="-4" width="72" height="0" fill="#3a2010"/>
+          </g>
+          <rect x="-8" y="20" width="16" height="7" rx="2" fill="#77706a"/>
+          <rect x="-6" y="27" width="4" height="5" fill="#77706a"/><rect x="2" y="27" width="4" height="5" fill="#77706a"/>
+          <rect x="38" y="0" width="22" height="9" rx="3" fill="#a9a199"/>
+          <rect x="58" y="-1" width="88" height="12" rx="6" fill="url(#dark)"/>
+          <rect x="62" y="1" width="80" height="2" rx="1" fill="rgba(255,255,255,.12)"/>
+        </g>
+      </svg>
+      <span class="tip" id="stageTip">Tip: drag the portafilter, or tap it</span>
+    </div>
+
+    <div class="panel">
+      <div class="card result" id="result" aria-live="polite">
+        <p class="verdict" id="verdict"></p>
+        <p class="taste" id="taste"></p>
+        <p class="coach" id="coach"></p>
+        <div class="btns" id="btns"></div>
+      </div>
+
+      <div class="card grind" id="grindCard">
+        <h3>Grind size</h3>
+        <div class="grind-row">
+          <button class="step" id="finer" aria-label="Finer grind">−</button>
+          <div class="num" id="grindNum" aria-live="polite">10</div>
+          <button class="step" id="coarser" aria-label="Coarser grind">+</button>
+        </div>
+        <input type="range" id="grindRange" min="0" max="16" step="1" value="10" aria-label="Grind size">
+        <div class="scale-lbl"><span>0 · Finest</span><span>16 · Coarsest</span></div>
+      </div>
+
+      <div class="read" aria-live="polite">
+        <div id="rTime"><b>0.0s</b><span>Time</span></div>
+        <div id="rYield"><b>0.0g</b><span>Yield</span></div>
+        <div id="rRatio"><b>1:0</b><span>Ratio</span></div>
+      </div>
+
+      <button class="act" id="act">Grind 18g</button>
+      <p class="note" id="note">Step 1 of 3 · Grind your coffee</p>
+
+      <div class="card">
+        <h3>Your shots</h3>
+        <ol class="log" id="log"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2 class="rv">How this works<span class="dot">.</span></h2>
+    <p class="rv">We keep the <b>dose fixed at 18g</b> and the machine on <b>double shot</b>, so the only thing you change is <b>grind size</b>. That's how you should dial in at home too: one change at a time.</p>
+    <p class="rv"><b>Finer grind = slower shot.</b> Smaller grounds pack tighter, so water takes longer to push through. <b>Coarser grind = faster shot.</b> On this grinder, a smaller number is finer.</p>
+    <p class="rv">The numbers here are a teaching model, not a recipe. Your beans, their roast and how fresh they are will move your sweet spot. Use the same process on your machine and you'll get there.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <img src="../assets/logo-white.svg" alt="Conversing Coffee">
+      <div class="foot-links">
+        <a href="https://www.instagram.com/conversingcoffee" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@conversingcoffee" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.buymeacoffee.com/Conversingcoffe" target="_blank" rel="noopener">Buy me a coffee</a>
+        <a href="mailto:contact@conversingcoffee.com">contact@conversingcoffee.com</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="yr"></span> Abraham Akbareian / Conversing Coffee</span>
+      <a href="../media-kit/">Work with me</a>
+    </div>
+  </div>
+</footer>
+
+<script src="sim.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('on',scrollY>30),{passive:true});
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
+document.getElementById('yr').textContent=new Date().getFullYear();
+if(!window.gsap||!window.ScrollTrigger){document.documentElement.classList.remove('js');throw new Error('Animation library failed to load; showing content without animation');}
+gsap.registerPlugin(ScrollTrigger);
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.rv').forEach(el=>{
+    gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%'}});
+  });
+}
+</script>
+</body>
+</html>
