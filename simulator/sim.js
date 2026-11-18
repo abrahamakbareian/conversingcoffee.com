@@ -38,11 +38,11 @@
   var grindNum = $('grindNum'), grindRange = $('grindRange'), mGrind = $('mGrind');
   var mTime = $('mTime'), mYield = $('mYield'), mDose = $('mDose');
   var rTime = $('rTime'), rYield = $('rYield'), rRatio = $('rRatio');
-  var zG = $('zGrinder'), zH = $('zGroup');
+  var zG = $('zGrinder'), zH = $('zGroup'), zK = $('zKnock'), kbPucks = $('kbPucks'), kbox = $('knockbox'), wandSteam = $('wandSteam');
 
   /* portafilter spots: basket centre top. Grinder spot rests on the left scale. */
-  var SPOT = { home: [52, 434], grinder: [187, 367], group: [400, 325] };
-  var TAMPER = { home: [604, 470], over: [187, 336], press: [187, 369] };
+  var SPOT = { home: [52, 434], grinder: [187, 367], group: [400, 325], knock: [616, 386] };
+  var TAMPER = { home: [686, 470], over: [187, 336], press: [187, 369] };
   var tamper = $('tamper'), tShadow = $('tShadow'), tpos = TAMPER.home.slice();
   var pos = SPOT.home.slice(), rot = 0;
   var state = 'empty', grind = M.start, shots = [], knobAng = 0;
@@ -81,7 +81,7 @@
       if (vis && !greeted) {
         greeted = true;
         setTimeout(function () {
-          crema('<span class="who">Crema</span>Hey, I\'m Crema! Let\'s pull a shot. <b>Drag the portafilter into the grinder</b>, or just tap it.', 'excited', { move: 'wave' });
+          crema('<span class="who">Crema</span>Hey, I\'m Crema! Let\'s pull a shot. <b>Drag the portafilter into the grinder cradle</b>, then press <b>GRIND</b>.', 'excited', { move: 'wave' });
         }, 500);
       }
     }, { threshold: 0.25 }).observe(document.querySelector('.sim'));
@@ -112,7 +112,7 @@
       setPF(x, y, r0 * (1 - e) - dir * 9 * Math.sin(Math.PI * e));
     }).then(function () { if (spot === 'home') pfShadow.style.opacity = 1; });
   }
-  function busy() { return state !== 'empty'; }
+  function busy() { return state !== 'empty' && state !== 'docked'; }
   function setGrind(v, animate) {
     grind = Math.max(M.min, Math.min(M.max, v | 0));
     grindNum.textContent = grind; grindRange.value = grind; mGrind.textContent = grind; markDial();
@@ -141,7 +141,11 @@
     gnums.forEach(function (t) { var on = +t.getAttribute('data-g') === grind; t.setAttribute('fill', on ? '#ff8a3d' : '#e9dfd3'); t.setAttribute('font-size', on ? 12 : 10); });
   }
   function setStep(btn, msg, enabled) { act.textContent = btn; note.textContent = msg; act.disabled = !enabled; }
-  function zones(which) { zG.classList.toggle('show', which === 'grinder'); zH.classList.toggle('show', which === 'group'); }
+  function zones(which) { zG.classList.toggle('show', which === 'grinder'); zH.classList.toggle('show', which === 'group'); zK.classList.toggle('show', which === 'knock'); }
+  /* the button that matters right now glows */
+  function rings(which) {
+    ['grind', 'dbl', 'steam'].forEach(function (k) { var r = $(k + 'Ring'); r.style.opacity = k === which ? 1 : 0; r.classList.toggle('on', k === which); });
+  }
   function bar(b) {
     /* semicircle: 0 bar far left, 9 bar straight up (ideal), 15 bar far right */
     b = Math.max(0, Math.min(15, b));
@@ -160,12 +164,22 @@
   })();
 
   /* ---------- steps ---------- */
-  function doGrind() {
-    if (state !== 'empty') return;
-    state = 'grinding'; lockGrind(true); zones(null);
-    setStep('Grinding…', 'Grinding 18g at setting ' + grind, false);
-    crema('Grinding 18g at setting <b>' + grind + '</b>. Watch the scale under the grinder.', 'think');
+  function dock() {
+    if (state !== 'empty') return Promise.resolve();
+    state = 'docking'; zones(null);
     return moveTo('grinder').then(function () {
+      state = 'docked'; rings('grind');
+      setStep('Grind 18g', 'Step 1 of 4 · Press GRIND on the machine', true);
+      crema('In the cradle. Now <b>press GRIND</b> on the machine.', 'excited');
+    });
+  }
+  function doGrind() {
+    if (state !== 'empty' && state !== 'docked') return;
+    var first = state === 'empty' ? moveTo('grinder') : Promise.resolve();
+    state = 'grinding'; lockGrind(true); zones(null); rings(null);
+    setStep('Grinding…', 'Grinding 18g at setting ' + grind, false);
+    crema('Grinding 18g at setting <b>' + grind + '</b>. Watch the dose scale.', 'think');
+    return first.then(function () {
       var spawn = null, beans = $('beans');
       gStream.setAttribute('opacity', still ? 0 : 0.9);
       if (!still) spawn = setInterval(function () {
@@ -244,8 +258,8 @@
       return tween(380, function (k) { setPF(SPOT.group[0], SPOT.group[1] - 3 * Math.sin(Math.PI * k), -10 * Math.sin(Math.PI * k)); });
     }).then(function () {
       state = 'locked';
-      setStep('Double shot', 'Step 4 of 4 · Hit 2 CUP or the button below', true);
-      crema('Locked in. <b>Hit 2 CUP</b> and watch the timer and the scale.', 'excited');
+      setStep('Double shot', 'Step 4 of 4 · Press DOUBLE SHOT', true); rings('dbl');
+      crema('Locked in. <b>Press DOUBLE SHOT</b> and watch the timer and the scale.', 'excited');
     });
   }
   function streamPath(x, top, bottom, now, wob) {
@@ -260,7 +274,7 @@
   }
   function doShot() {
     if (state !== 'locked') return;
-    state = 'pulling'; dblRing.style.opacity = 0.2;
+    state = 'pulling'; rings(null);
     setStep('Pulling…', 'Watch the time and the scale', false);
     var s = model(grind), j = judge(s), said = false;
     var speed = Math.max(3, s.t / 9), preinf = s.choke ? 10 : 4, dur = (s.t / speed) * 1000;
@@ -300,7 +314,7 @@
         else crema('Ooh, that looks lovely…', 'smile');
       }
     }).then(function () {
-      streams.setAttribute('opacity', 0); dblRing.style.opacity = 0.9;
+      streams.setAttribute('opacity', 0);
       return tween(600, function (k) { bar((1 - k) * j.bar); cupSteam.setAttribute('opacity', (0.8 * k).toFixed(2)); });
     }).then(function () {
       readout(s.t, s.y);
@@ -308,25 +322,71 @@
       shots.push({ g: grind, t: s.t, y: s.y, j: j });
       logShot();
       showResult(s, j);
-      setStep('Knock out and go again', 'Change the grind, then pull another shot', true);
+      setStep('Knock out', 'Drag the portafilter to the knock box, or tap it', true); zones('knock');
     });
   }
   function knockOut() {
     if (state !== 'done') return Promise.resolve();
-    state = 'knocking';
+    state = 'knocking'; zones(null);
     setStep('Knocking out…', '', false);
-    return tween(260, function (k) { setPF(SPOT.group[0], SPOT.group[1] + 2 * Math.sin(Math.PI * k), 10 * Math.sin(Math.PI * k)); })
+    var fromGroup = Math.hypot(pos[0] - SPOT.group[0], pos[1] - SPOT.group[1]) < 4;
+    var unlock = fromGroup ? tween(260, function (k) { setPF(SPOT.group[0], SPOT.group[1] + 2 * Math.sin(Math.PI * k), 10 * Math.sin(Math.PI * k)); }) : Promise.resolve();
+    return unlock
+      .then(function () { return moveTo('knock', 650); })
+      .then(function () { return knock(); })
+      .then(function () { return knock(); })
       .then(function () { return moveTo('home', 650); })
       .then(function () {
-        return tween(240, function (k) { setPF(SPOT.home[0], SPOT.home[1] - 6 * Math.sin(Math.PI * k), 0); if (k > 0.5) tamped.setAttribute('opacity', 0); });
-      }).then(function () {
         tamped.setAttribute('opacity', 0); mound.setAttribute('ry', 0);
         var f0 = cupFill;
         tween(400, function (k) { fillCup(f0 * (1 - k)); cupSteam.setAttribute('opacity', (0.8 * (1 - k)).toFixed(2)); });
         readout(0, 0);
-        state = 'empty'; lockGrind(false); zones('grinder');
+        state = 'empty'; lockGrind(false); zones('grinder'); rings('grind');
         setStep('Grind 18g', 'Step 1 of 4 · Grind your coffee', true);
       });
+  }
+
+  /* two sharp knocks on the bar; the puck drops into the box on the first */
+  var pucks = 0;
+  function knock() {
+    var dropNow = +tamped.getAttribute('opacity') > 0;
+    return tween(230, function (k) {
+      var d = k < 0.45 ? k / 0.45 : 1 - (k - 0.45) / 0.55;
+      setPF(SPOT.knock[0], SPOT.knock[1] + 10 * d, -6 * d);
+      kbox.setAttribute('transform', k > 0.4 && k < 0.6 ? 'translate(0 1.5)' : '');
+    }).then(function () {
+      if (!dropNow) return;
+      tamped.setAttribute('opacity', 0);
+      var puck = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      puck.setAttribute('cx', SPOT.knock[0]); puck.setAttribute('rx', 24); puck.setAttribute('ry', 6); puck.setAttribute('fill', '#3a200f');
+      puck.setAttribute('stroke', '#1c0e05');
+      kbPucks.appendChild(puck);
+      var n = Math.min(pucks, 5), land = 462 - n * 5, y = SPOT.knock[1] + 4, v = 1;
+      pucks++;
+      return new Promise(function (done) {
+        if (still) { puck.setAttribute('cy', land); return done(); }
+        (function f() { v += 0.9; y += v; puck.setAttribute('cy', Math.min(land, y).toFixed(1));
+          if (y < land) requestAnimationFrame(f); else { kbox.setAttribute('transform', 'translate(0 2)'); setTimeout(function () { kbox.removeAttribute('transform'); }, 90); done(); } })();
+      });
+    });
+  }
+
+  /* steam button: a puff from the wand, just for fun */
+  var quips = ['That\'s for milk! We\'re doing espresso today.', 'Pssshhh! Save that for your flat white.', 'Ooh, toasty. Back to the espresso?'];
+  function puff() {
+    for (var i = 0; i < 26; i++) {
+      (function (i) {
+        var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('fill', 'rgba(255,237,215,.5)'); wandSteam.appendChild(c);
+        var x = 541, y = 410, vx = (Math.random() - 0.5) * 1.8, vy = 0.5 + Math.random() * 0.9, r = 2, life = 0;
+        setTimeout(function () {
+          (function f() { life++; vy -= 0.06; x += vx; y += vy; r += 0.5; c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+            c.setAttribute('r', r.toFixed(1)); c.setAttribute('opacity', Math.max(0, 1 - life / 60).toFixed(2));
+            if (life < 60) requestAnimationFrame(f); else c.remove(); })();
+        }, still ? 0 : i * 25);
+      })(i);
+    }
+    crema(quips[Math.floor(Math.random() * quips.length)], 'excited');
   }
 
   /* ---------- coaching ---------- */
@@ -361,7 +421,7 @@
       ? [{ label: 'Try another setting', pri: true, go: function () { knockOut().then(function () { pulseGrind(); crema('Go on, try something silly like <b>16</b> and see how bad it gets.', 'excited'); }); } },
          { label: 'Get the gear', go: function () { location.href = '../codes/'; } }]
       : [{ label: 'Yes, change grind', pri: true, go: change },
-         { label: 'Same again', go: function () { knockOut().then(function () { crema('Same setting again. Tap the portafilter to grind.', 'smile'); }); } }];
+         { label: 'Same again', go: function () { knockOut().then(function () { crema('Same setting again. Pop the portafilter in the grinder and press <b>GRIND</b>.', 'smile'); }); } }];
     crema(c.text + (j.key === 'ok' ? '' : '<br><br>Want to change your settings?'), c.face, { buttons: buttons, move: c.move });
   }
   function pulseGrind() {
@@ -381,10 +441,18 @@
 
   /* ---------- controls ---------- */
   act.addEventListener('click', function () {
-    if (state === 'empty') doGrind(); else if (state === 'ground') doTamp(); else if (state === 'tamped') doLock();
+    if (state === 'empty' || state === 'docked') doGrind(); else if (state === 'ground') doTamp(); else if (state === 'tamped') doLock();
     else if (state === 'locked') doShot(); else if (state === 'done') knockOut();
   });
-  $('dblBtn').addEventListener('click', function () { if (state === 'locked') doShot(); });
+  $('dblBtn').addEventListener('click', function () {
+    if (state === 'locked') doShot();
+    else if (state === 'empty' || state === 'docked' || state === 'ground' || state === 'tamped') crema('Not yet! Get the portafilter <b>ground, tamped and locked in</b> first.', 'smile');
+  });
+  $('grindBtn').addEventListener('click', function () {
+    if (state === 'empty' || state === 'docked') doGrind();
+    else if (state === 'ground' || state === 'tamped' || state === 'locked') crema('Already ground! One dose at a time.', 'smile');
+  });
+  $('steamBtn').addEventListener('click', puff);
   $('finer').addEventListener('click', function () { if (!busy()) setGrind(grind - 1); });
   $('coarser').addEventListener('click', function () { if (!busy()) setGrind(grind + 1); });
   grindRange.addEventListener('input', function () { if (!busy()) setGrind(+grindRange.value); else grindRange.value = grind; });
@@ -394,17 +462,17 @@
   var drag = null;
   pf.addEventListener('pointerdown', function (e) {
     if (state === 'ground') { crema('Tamp it first! <b>Grab the tamper</b> on the right.', 'smile'); return; }
-    if (state !== 'empty' && state !== 'tamped') return;
+    if (state !== 'empty' && state !== 'tamped' && state !== 'done') return;
     e.preventDefault();
     var p = svgPt(e);
     drag = { dx: pos[0] - p.x, dy: pos[1] - p.y, moved: false, lx: p.x };
     pf.setPointerCapture(e.pointerId); pf.classList.add('drag'); pfShadow.style.opacity = 0;
-    zones(state === 'empty' ? 'grinder' : 'group');
+    zones(state === 'empty' ? 'grinder' : state === 'done' ? 'knock' : 'group');
   });
   pf.addEventListener('pointermove', function (e) {
     if (!drag) return;
     var p = svgPt(e);
-    var x = Math.max(40, Math.min(560, p.x + drag.dx)), y = Math.max(40, Math.min(480, p.y + drag.dy));
+    var x = Math.max(40, Math.min(660, p.x + drag.dx)), y = Math.max(40, Math.min(480, p.y + drag.dy));
     if (Math.hypot(x - pos[0], y - pos[1]) > 2) drag.moved = true;
     var tilt = Math.max(-12, Math.min(12, (p.x - drag.lx) * 0.8)); drag.lx = p.x;
     setPF(x, y, rot * 0.7 + tilt * 0.3);
@@ -412,10 +480,10 @@
   function endDrag() {
     if (!drag) return;
     var moved = drag.moved; drag = null; pf.classList.remove('drag');
-    var target = state === 'empty' ? 'grinder' : 'group';
+    var target = state === 'empty' ? 'grinder' : state === 'done' ? 'knock' : 'group';
     var near = Math.hypot(pos[0] - SPOT[target][0], pos[1] - SPOT[target][1]) < 75;
-    if (!moved || near) { if (state === 'empty') doGrind(); else doLock(); }
-    else moveTo(state === 'empty' ? 'home' : 'grinder', 420).then(function () { zones(target); crema('Close! Drop it on the dashed outline.', 'smile'); });
+    if (!moved || near) { if (state === 'empty') dock(); else if (state === 'done') knockOut(); else doLock(); }
+    else moveTo(state === 'empty' ? 'home' : state === 'done' ? 'group' : 'grinder', 420).then(function () { zones(target); crema('Close! Drop it on the dashed outline.', 'smile'); });
   }
   pf.addEventListener('pointerup', endDrag);
   pf.addEventListener('pointercancel', endDrag);
@@ -452,5 +520,5 @@
   /* start */
   setPF(SPOT.home[0], SPOT.home[1], 0);
   setGrind(M.start, false);
-  zones('grinder');
+  zones('grinder'); rings('grind');
 })();
