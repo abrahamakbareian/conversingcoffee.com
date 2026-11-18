@@ -41,8 +41,8 @@
   var zG = $('zGrinder'), zH = $('zGroup');
 
   /* portafilter spots: basket centre top. Grinder spot rests on the left scale. */
-  var SPOT = { home: [64, 434], grinder: [215, 367], group: [440, 333] };
-  var TAMPER = { home: [604, 470], over: [215, 336], press: [215, 369] };
+  var SPOT = { home: [52, 434], grinder: [187, 367], group: [400, 325] };
+  var TAMPER = { home: [604, 470], over: [187, 336], press: [187, 369] };
   var tamper = $('tamper'), tShadow = $('tShadow'), tpos = TAMPER.home.slice();
   var pos = SPOT.home.slice(), rot = 0;
   var state = 'empty', grind = M.start, shots = [], knobAng = 0;
@@ -115,12 +115,12 @@
   function busy() { return state !== 'empty'; }
   function setGrind(v, animate) {
     grind = Math.max(M.min, Math.min(M.max, v | 0));
-    grindNum.textContent = grind; grindRange.value = grind; mGrind.textContent = grind;
+    grindNum.textContent = grind; grindRange.value = grind; mGrind.textContent = grind; markDial();
     $('finer').disabled = grind <= M.min || busy();
     $('coarser').disabled = grind >= M.max || busy();
     var target = 225 + 270 * grind / 16, from = knobAng;
-    if (animate === false || still) { knobAng = target; knob.setAttribute('transform', 'rotate(' + target + ' 215 214)'); return; }
-    tween(320, function (k) { knobAng = from + (target - from) * back(k); knob.setAttribute('transform', 'rotate(' + knobAng.toFixed(1) + ' 215 214)'); });
+    if (animate === false || still) { knobAng = target; knob.setAttribute('transform', 'rotate(' + target + ' 187 240)'); return; }
+    tween(320, function (k) { knobAng = from + (target - from) * back(k); knob.setAttribute('transform', 'rotate(' + knobAng.toFixed(1) + ' 187 240)'); });
   }
   function lockGrind(lock) { grindRange.disabled = lock; setGrind(grind, false); }
   function readout(t, y) {
@@ -129,9 +129,25 @@
     mTime.textContent = tt; mYield.textContent = yy;
     rTime.classList.toggle('good', t >= M.lo && t <= M.hi);
   }
+  /* seen from above: the coffee surface spreads across the cup as it fills */
+  var cupFill = 0;
+  function fillCup(f) {
+    cupFill = f;
+    var s = Math.sqrt(Math.max(0, f));
+    liquid.setAttribute('rx', (26 * s).toFixed(2)); liquid.setAttribute('ry', (4.4 * s).toFixed(2));
+  }
+  var gnums = svg.querySelectorAll('.gnum');
+  function markDial() {
+    gnums.forEach(function (t) { var on = +t.getAttribute('data-g') === grind; t.setAttribute('fill', on ? '#ff8a3d' : '#e9dfd3'); t.setAttribute('font-size', on ? 12 : 10); });
+  }
   function setStep(btn, msg, enabled) { act.textContent = btn; note.textContent = msg; act.disabled = !enabled; }
   function zones(which) { zG.classList.toggle('show', which === 'grinder'); zH.classList.toggle('show', which === 'group'); }
-  function bar(b) { needle.setAttribute('transform', 'rotate(' + (-120 + 240 * Math.max(0, Math.min(15, b)) / 15).toFixed(1) + ' 482 196)'); }
+  function bar(b) {
+    /* semicircle: 0 bar far left, 9 bar straight up (ideal), 15 bar far right */
+    b = Math.max(0, Math.min(15, b));
+    var a = b < 9 ? (b - 9) / 9 * 90 : (b - 9) / 6 * 90;
+    needle.setAttribute('transform', 'rotate(' + a.toFixed(1) + ' 372 214)');
+  }
 
   /* beans */
   (function () {
@@ -155,13 +171,13 @@
       if (!still) spawn = setInterval(function () {
         for (var i = 0; i < 3; i++) {
           var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          c.setAttribute('cx', 215 + (Math.random() - 0.5) * 8); c.setAttribute('cy', 318);
+          c.setAttribute('cx', 187 + (Math.random() - 0.5) * 8); c.setAttribute('cy', 330);
           c.setAttribute('r', (0.6 + Math.random() * 1.1) * (0.6 + grind / 20)); c.setAttribute('fill', Math.random() < 0.5 ? '#4a2a14' : '#6a3d1d');
           groundsG.appendChild(c);
           (function (c, vx) {
-            var y = 318, vy = 0.5, x = +c.getAttribute('cx');
+            var y = 330, vy = 0.5, x = +c.getAttribute('cx');
             (function fall() { vy += 0.32; y += vy; x += vx; c.setAttribute('cy', y.toFixed(1)); c.setAttribute('cx', x.toFixed(1));
-              if (y < 362) requestAnimationFrame(fall); else c.remove(); })();
+              if (y < 364) requestAnimationFrame(fall); else c.remove(); })();
           })(c, (Math.random() - 0.5) * 0.25);
         }
       }, 28);
@@ -263,20 +279,19 @@
       var flowing = !s.choke && t > preinf && k < 0.985;
       /* pre-infusion and choked shots drip; normal shots stream */
       if (!flowing && k < 0.985 && t > 1.5 && now - lastDrip > (s.choke ? 260 : 140)) {
-        lastDrip = now; drop(425 + (Math.random() < 0.5 ? 0 : 30), 370, 400 - Math.min(24, y * 0.7), cols[1]);
+        lastDrip = now; drop(385 + (Math.random() < 0.5 ? 0 : 30), 362, 374, cols[1]);
       }
       streams.setAttribute('opacity', flowing ? 1 : 0);
       if (flowing) {
-        var surf = 402 - Math.min(24, y * 0.68);
+        var surf = 375;
         var col = k > 0.75 ? cols[0] : cols[2];      /* blonding near the end */
-        [[s1, 425], [s2, 455]].forEach(function (p) {
-          p[0].setAttribute('d', streamPath(p[1], 371, surf, now, width * 0.7));
+        [[s1, 385], [s2, 415]].forEach(function (p) {
+          p[0].setAttribute('d', streamPath(p[1], 362, surf, now, width * 0.45));
           p[0].setAttribute('stroke-width', (width * (0.85 + Math.sin(now / 70 + p[1]) * 0.15)).toFixed(2));
           p[0].setAttribute('stroke', col);
         });
       }
-      var h = Math.min(26, y * 0.7);
-      liquid.setAttribute('y', (404 - h).toFixed(1)); liquid.setAttribute('height', h.toFixed(1));
+      fillCup(Math.min(1, y / 36));
       if (!said && t > Math.min(8, s.t * 0.5)) {
         said = true;
         if (FAST[j.key]) crema('Whoa, that\'s flying out…', 'shock');
@@ -306,8 +321,8 @@
         return tween(240, function (k) { setPF(SPOT.home[0], SPOT.home[1] - 6 * Math.sin(Math.PI * k), 0); if (k > 0.5) tamped.setAttribute('opacity', 0); });
       }).then(function () {
         tamped.setAttribute('opacity', 0); mound.setAttribute('ry', 0);
-        var h0 = +liquid.getAttribute('height');
-        tween(400, function (k) { var h = h0 * (1 - k); liquid.setAttribute('height', h.toFixed(1)); liquid.setAttribute('y', (404 - h).toFixed(1)); cupSteam.setAttribute('opacity', (0.8 * (1 - k)).toFixed(2)); });
+        var f0 = cupFill;
+        tween(400, function (k) { fillCup(f0 * (1 - k)); cupSteam.setAttribute('opacity', (0.8 * (1 - k)).toFixed(2)); });
         readout(0, 0);
         state = 'empty'; lockGrind(false); zones('grinder');
         setStep('Grind 18g', 'Step 1 of 4 · Grind your coffee', true);
