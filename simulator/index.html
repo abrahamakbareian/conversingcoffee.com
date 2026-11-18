@@ -4,11 +4,11 @@
 <script>document.documentElement.classList.add('js')</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espresso Simulator: Learn to Dial In | Conversing Coffee</title>
+<title>Espresso Machine Simulator: Learn to Dial In | Conversing Coffee</title>
 <meta name="description" content="Pull virtual espresso shots and learn how grind size changes shot time. Fixed 18g dose, double shot, target 36g in 25 to 30 seconds. A free dialling-in trainer from Conversing Coffee.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://conversingcoffee.com/simulator/">
-<meta property="og:title" content="Espresso Simulator | Conversing Coffee">
+<meta property="og:title" content="Espresso Machine Simulator | Conversing Coffee">
 <meta property="og:description" content="Grind, tamp, pull. Learn to dial in espresso without wasting a single bean.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +27,7 @@
 .picker button{font:inherit;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;background:none;color:var(--cream-dim);border:1px solid var(--cork);border-radius:22px;padding:11px 20px;cursor:pointer;transition:all .25s}
 .picker button.on{border-color:var(--ember);color:var(--cream);background:rgba(220,80,0,.08)}
 .picker button[disabled]{cursor:not-allowed;opacity:.55}
+.picker .tag-on{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--cream);border:1px solid var(--ember);border-radius:22px;padding:11px 20px;background:rgba(220,80,0,.08)}
 .picker button small{font-size:10px;color:var(--drift);margin-left:6px;letter-spacing:.12em}
 
 .sim{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,1fr);gap:clamp(22px,3vw,40px);align-items:start}
@@ -172,7 +173,7 @@
 
 <header class="page-hero">
   <div class="wrap">
-    <p class="label rv">Simulator · Dial in without wasting beans</p>
+    <p class="label rv">Espresso Machine Simulator · Dial in without wasting beans</p>
     <h1 class="h-display rv">Pull a shot<span class="dot">.</span></h1>
     <p class="body-md rv">Grind, lock in, pull. See what happened, change one thing, and go again. That's all dialling in is, and this lets you practise it without binning a bag of beans.</p>
     <div class="rules rv">
@@ -185,9 +186,8 @@
 </header>
 
 <main class="wrap">
-  <div class="picker rv" role="tablist" aria-label="Choose a machine">
-    <button class="on" role="tab" aria-selected="true">Sage Barista Express</button>
-    <button role="tab" aria-selected="false" disabled>Ninja Luxe Café <small>Coming soon</small></button>
+  <div class="picker rv">
+    <span class="tag-on">Espresso Machine Simulator</span>
   </div>
 
   <section class="sim" aria-label="Espresso simulator">
