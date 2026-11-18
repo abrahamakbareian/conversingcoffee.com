@@ -1,6 +1,7 @@
 /* Hero steam wand: a stainless wand enters from the left and purges steam
    behind the headline. Canvas only, no libraries. Pauses off-screen and
-   shows a still frame for people who prefer reduced motion. */
+   shows a still frame for people who prefer reduced motion.
+   Grab the tip to swing the wand: it pivots off-screen and the steam follows. */
 (function () {
   var hero = document.querySelector('.hero');
   var cv = document.getElementById('steam');
@@ -8,7 +9,8 @@
   var ctx = cv.getContext('2d');
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var W = 0, H = 0, dpr = 1, wand = null, parts = [], t0 = performance.now(), last = t0;
-  var running = false, raf = 0, visible = true;
+  var running = false, raf = 0, visible = true, drag = null, hint = null, played = false;
+  try { played = localStorage.getItem('cc-wand') === '1'; } catch (e) {}
 
   /* soft steam puff, pre-rendered once */
   var puff = document.createElement('canvas');
@@ -35,7 +37,15 @@
     var s = roomy ? Math.min(1, W / 1440 + 0.15) : Math.max(0.55, W / 700);
     var tipX = roomy ? h1.left - 20 * s : Math.min(W * 0.3, 112);
     var tipY = roomy ? h1.top - top + h1.height * 0.12 : label.top - top - 34;
-    wand = { x: tipX, y: tipY, s: s, ang: roomy ? 0.62 : 0.7, m: roomy ? 1 : 0.55 };
+    var ang = roomy ? 0.62 : 0.7, L = (roomy ? 420 : 300) * s;
+    wand = { s: s, m: roomy ? 1 : 0.55, roomy: roomy, rest: ang, ang: ang, target: ang, L: L,
+             px: tipX - L * Math.cos(ang), py: tipY - L * Math.sin(ang),
+             min: roomy ? 0.12 : 0.15, max: roomy ? 1.05 : 1.2 };
+    place();
+  }
+  function place() {
+    wand.x = wand.px + wand.L * Math.cos(wand.ang);
+    wand.y = wand.py + wand.L * Math.sin(wand.ang);
   }
 
   /* chrome: dark edges, a hard white highlight and a softer second reflection */
@@ -76,7 +86,7 @@
   /* flow: a strong purge on load that settles into a gentle stream, with slow breathing */
   function flow(t) {
     var purge = Math.max(0, 1 - t / 2.2);
-    return 0.55 + 0.2 * Math.sin(t * 0.9) + 1.8 * purge * purge;
+    return 0.55 + 0.2 * Math.sin(t * 0.9) + 1.8 * purge * purge + (drag ? 0.5 : 0);
   }
   function emit(dt, t) {
     var n = flow(t) * 140 * dt * (W < 700 ? 0.75 : 1);
@@ -96,6 +106,10 @@
     if (parts.length > 520) parts.splice(0, parts.length - 520);
   }
   function step(dt, t) {
+    var goal = wand.target;
+    if (!drag && !played && t > 2.6 && t < 4.2) goal += Math.sin((t - 2.6) * 9) * 0.06 * (4.2 - t);
+    wand.ang += (goal - wand.ang) * (1 - Math.pow(0.0004, dt));
+    place();
     emit(dt, t);
     for (var i = parts.length - 1; i >= 0; i--) {
       var p = parts[i];
@@ -126,6 +140,11 @@
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
     drawWand();
+    if (hint) {
+      var hx = wand.roomy ? wand.x - 150 * wand.s : wand.x + 24;
+      var hy = wand.roomy ? wand.y + 30 * wand.s : wand.y - 66;
+      hint.style.transform = 'translate(' + hx.toFixed(1) + 'px,' + hy.toFixed(1) + 'px)';
+    }
   }
   function frame(now) {
     var dt = Math.min(0.05, (now - last) / 1000); last = now;
@@ -142,7 +161,73 @@
     if (k >= 1) stop(); else if (visible && !document.hidden) start();
   }
 
+  /* ---- drag to aim ---- */
+  function local(e) {
+    var r = hero.getBoundingClientRect(), p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - r.left, y: p.clientY - r.top };
+  }
+  function onWand(pt, pad) {                       /* distance to the visible end of the wand */
+    var ca = Math.cos(wand.ang), sa = Math.sin(wand.ang), len = 220 * wand.s;
+    var dx = pt.x - wand.x, dy = pt.y - wand.y;
+    var along = -(dx * ca + dy * sa);              /* how far back from the tip */
+    along = Math.max(0, Math.min(len, along));
+    var cx = wand.x - ca * along, cy = wand.y - sa * along;
+    return Math.hypot(pt.x - cx, pt.y - cy) < 17 * wand.s + pad;
+  }
+  function aim(pt) {
+    var a = Math.atan2(pt.y - wand.py, pt.x - wand.px);
+    wand.target = Math.max(wand.min, Math.min(wand.max, a));
+  }
+  function grab(pt) {
+    drag = true; hero.classList.add('wand-dragging');
+    if (!played) {
+      played = true; try { localStorage.setItem('cc-wand', '1'); } catch (e) {}
+      if (hint) hint.classList.add('gone');
+    }
+    aim(pt); fade();
+  }
+  function release() { if (!drag) return; drag = null; hero.classList.remove('wand-dragging'); }
+
+  function initDrag() {
+    hint = document.createElement('div');
+    hint.className = 'wand-hint' + (played ? ' gone' : '');
+    hint.setAttribute('aria-hidden', 'true');
+    hint.innerHTML = wand.roomy
+      ? '<span>drag me</span><svg viewBox="0 0 60 40" width="44" height="30"><path d="M4 34 C 22 34, 38 24, 52 8" /><path d="M42 8 L 53 6 L 50 17" /></svg>'
+      : '<svg viewBox="0 0 60 40" width="40" height="28"><path d="M56 6 C 40 8, 22 16, 8 32" /><path d="M8 21 L 7 33 L 18 31" /></svg><span>drag me</span>';
+    hero.appendChild(hint);
+    setTimeout(function () { hint.classList.add('in'); }, 2400);
+
+    hero.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'touch' || e.button !== 0) return;
+      var pt = local(e);
+      if (!onWand(pt, 10)) return;
+      e.preventDefault(); grab(pt);
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      var pt = local(e);
+      if (drag) { aim(pt); return; }
+      hero.classList.toggle('wand-hover', pt.y >= 0 && pt.y <= H && onWand(pt, 10));
+    });
+    window.addEventListener('pointerup', release);
+    /* touch: only a touch that starts on the wand grabs it, anything else scrolls */
+    hero.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      var pt = local(e);
+      if (!onWand(pt, 22)) return;
+      e.preventDefault(); grab(pt);
+    }, { passive: false });
+    hero.addEventListener('touchmove', function (e) {
+      if (!drag) return;
+      e.preventDefault(); aim(local(e));
+    }, { passive: false });
+    hero.addEventListener('touchend', release);
+    hero.addEventListener('touchcancel', release);
+  }
+
   layout();
+  if (!still) initDrag();
   if (still) {                       /* reduced motion: one settled frame */
     for (var i = 0; i < 240; i++) step(1 / 60, 4 + i / 60);
     draw();

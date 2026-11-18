@@ -94,6 +94,13 @@ nav.on{background:rgba(16,9,4,.9);backdrop-filter:blur(12px);-webkit-backdrop-fi
 .hero h1>span{display:block}
 #steam{position:absolute;inset:0;z-index:0;pointer-events:none}
 .hero>.wrap,.hero-foot{position:relative;z-index:1}
+.wand-hover,.wand-hover *{cursor:grab}
+.wand-dragging,.wand-dragging *{cursor:grabbing!important;user-select:none;-webkit-user-select:none}
+.wand-hint{position:absolute;left:0;top:0;z-index:2;pointer-events:none;display:flex;align-items:center;gap:4px;color:var(--ember);font-size:15px;font-style:italic;letter-spacing:.02em;white-space:nowrap;opacity:0;transition:opacity .6s ease}
+.wand-hint span{display:inline-block;transform:rotate(-6deg)}
+.wand-hint svg{fill:none;stroke:var(--ember);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wand-hint.in{opacity:.95}
+.wand-hint.gone{opacity:0!important}
 .hero-sub{margin-top:44px;max-width:520px}
 .hero-foot{
   position:absolute;bottom:0;left:0;right:0;
